@@ -21,6 +21,9 @@
                         zoom: {
                             enabled: true,
                             type: 'xy'
+                        },
+                        animations: {
+                            enabled: false
                         }
                     },
                     xaxis: {
@@ -46,11 +49,18 @@
         computed: {
             get_series: function () {
                 return this.series.map(function (r) {
-                    return {"name": r.device.id,
-                            "data": r.data.map( r=> [parseFloat(r.latitude), parseFloat(r.longitude)])}
+                    return {
+                        "name": r.device.id,
+                        "data": [r.data.map(function (d) {
+                            return {
+                                'x': parseFloat(d.latitude),
+                                'y': parseFloat(d.longitude),
+                            }
+                        }).pop()]
+                    }
                 })
             }
-        },
+        }
     }
 </script>
 

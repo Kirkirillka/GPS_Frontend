@@ -2,17 +2,16 @@
     <div>
 
         <LastClientsPosition
-        v-bind:series="clients_data">
+                v-bind:series="clients_data">
         </LastClientsPosition>
 
         <SignalQualityDynamics
-        v-bind:series="clients_data">
+                v-bind:series="clients_data">
         </SignalQualityDynamics>
 
 
-
-        <SignalQualityGeoPosition>
-
+        <SignalQualityGeoPosition
+                v-bind:series="clients_data">
         </SignalQualityGeoPosition>
 
     </div>
@@ -38,17 +37,23 @@
         data: function () {
             return {
                 clients_data: [],
-                records_num: 20
+                records_num: 100,
+                refresh_timeout: 3000
             }
         },
         methods: {
             fetch_info_by_client: function () {
-                axios.get("http://localhost:5000/aggr/by_device_id?limit="+this.records_num)
+                axios.get("http://localhost:5000/aggr/by_device_id?limit=" + this.records_num)
                     .then(response => this.clients_data = response.data);
             },
         },
-        mounted: function () {
+        created: function () {
             this.fetch_info_by_client();
+            this.timer = setInterval(this.fetch_info_by_client, this.refresh_timeout)
+
+        },
+        beforeDestroy() {
+            clearInterval(this.timer)
         }
     }
 </script>
