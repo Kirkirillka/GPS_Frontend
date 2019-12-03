@@ -1,18 +1,23 @@
 <template>
     <div>
 
-        <LastClientsPosition
-                v-bind:series="clients_data">
-        </LastClientsPosition>
+        <b-button v-on:click="fetch_info_by_client">Fetch new data</b-button>
 
-        <SignalQualityDynamics
-                v-bind:series="clients_data">
-        </SignalQualityDynamics>
+        <b-container>
 
+            <LastClientsPosition
+                    v-bind:series="clients_data">
+            </LastClientsPosition>
 
-        <SignalQualityGeoPosition
-                v-bind:series="clients_data">
-        </SignalQualityGeoPosition>
+            <SignalQualityDynamics
+                    v-bind:series="clients_data">
+            </SignalQualityDynamics>
+
+            <SignalQualityGeoPosition
+                    v-bind:series="clients_data">
+            </SignalQualityGeoPosition>
+        </b-container>
+
 
     </div>
 </template>
@@ -37,8 +42,8 @@
         data: function () {
             return {
                 clients_data: [],
-                records_num: 100,
-                refresh_timeout: 3000
+                records_num: 500,
+                refresh_timeout: 4000
             }
         },
         methods: {
@@ -49,7 +54,7 @@
         },
         created: function () {
             this.fetch_info_by_client();
-            this.timer = setInterval(this.fetch_info_by_client, this.refresh_timeout)
+            //this.timer = setInterval(this.fetch_info_by_client, this.refresh_timeout)
 
         },
         beforeDestroy() {

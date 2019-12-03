@@ -16,7 +16,8 @@
             return {
                 options: {
                     chart: {
-                        height: 350,
+                        height: 250,
+                        width: 200,
                         type: 'scatter',
                         zoom: {
                             enabled: true,
@@ -57,6 +58,13 @@
                                 'y': parseFloat(d.longitude),
                             }
                         }).pop()]
+                    }
+                })
+            },
+            get_labels : function () {
+                return this.series.map(function (r) {
+                    return {
+                        seriesName: r.device.id,
                     }
                 })
             }

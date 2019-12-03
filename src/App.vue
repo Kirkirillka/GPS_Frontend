@@ -1,7 +1,9 @@
 <template>
     <div id="app">
         <b-container fluid>
-            <Header></Header>
+            <Header>
+
+            </Header>
             <b-row>
                 <b-col md="3">
                     <ClientsList></ClientsList>

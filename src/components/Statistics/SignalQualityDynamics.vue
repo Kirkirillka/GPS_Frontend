@@ -7,6 +7,7 @@
 <script>
 
     import moment from "moment";
+    //import * as d3 from "d3v4";
 
 
     export default {
@@ -15,34 +16,77 @@
         data: function () {
             return {
                 options: {
-                    plotOptions: {line: {curve: 'smooth'}},
-                    stroke: {
-                        curve: "smooth"
+                    plotOptions: {
+                        line: {
+                            curve: 'smooth',
+                        }
                     },
                     chart: {
-                        height: 350,
-                        type: 'line',
+                        type: "line",
+                        stacked: true,
                         zoom: {
-                            enabled: true,
-                            type: 'xy'
+                            enabled: false
+                        },
+                    },
+
+                    dataLabels: {
+                        enabled: false
+                    },
+
+                    markers: {
+                        size: 0,
+                        style: 'full',
+                    },
+                    fill: {
+                        type: 'gradient',
+                        gradient: {
+
+                            inverseColors: false,
+                            opacityFrom: 0.40,
+                            opacityTo: 0.8,
+                            stops: [20, 100, 100, 100]
+                        },
+                    },
+                    yaxis: {
+                        labels: {
+                            style: {
+                                color: '#8e8da4',
+                            },
+                            offsetX: 0,
+                            formatter: function (val) {
+                                return -parseFloat(val).toFixed(2);
+                            },
+                        },
+                        axisBorder: {
+                            show: true
+                        },
+                        axisTicks: {
+                            show: false
                         }
                     },
                     xaxis: {
+                        type: 'datetime',
+                        tickAmount: 8,
                         labels: {
-                            formatter: (val) =>
-                                moment.utc(val).format("hh:mm:ss")
-                        }
 
-                    },
-                    yaxis: {
-                        tickAmount: 10,
-                        labels: {
-                            formatter: function (val) {
-                                return parseFloat(val).toFixed(2);
+                            formatter: function (val, timestamp) {
+                                return moment(new Date(timestamp)).format("DD MMM hh:mm:ss")
                             }
                         }
+                    },
+                    title: {
+                        text: 'Irregular Data in Time Series',
+                        align: 'left',
+                        offsetX: 14
+                    },
+                    tooltip: {
+                        shared: true
+                    },
+                    legend: {
+                        position: 'top',
+                        horizontalAlign: 'right',
+                        offsetX: -10
                     }
-
                 }
             }
         }
@@ -56,10 +100,10 @@
                             function (r) {
                                 return {
                                     "x": r.time,
-                                    "y": parseFloat(r.signal)
+                                    "y": -parseFloat(r.signal)
                                 }
                             }
-                        )
+                        ).slice(0, 20)
                     }
                 })
             }
