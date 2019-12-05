@@ -8,10 +8,23 @@
 
     //import * as d3 from "d3";
 
-
     export default {
         name: "LastClientsPosition",
-        props: ["series"],
+        props: {
+            series: {
+                type: Array,
+                default: function () {
+                    return []
+                }
+            },
+            windows_size: {
+                type: Number,
+                default: 20
+            },
+            selected_dates: {
+                type: Object
+            }
+        },
         data: function () {
             return {
                 options: {
@@ -49,19 +62,31 @@
         },
         computed: {
             get_series: function () {
-                return this.series.map(function (r) {
-                    return {
-                        "name": r.device.id,
-                        "data": [r.data.map(function (d) {
-                            return {
-                                'x': parseFloat(d.latitude),
-                                'y': parseFloat(d.longitude),
-                            }
-                        }).pop()]
-                    }
-                })
+
+                let current_dates = this.selected_dates
+
+                return this.series
+                    .map(function (r) {
+                        return {
+                            "name": r.device.id,
+                            "data": r.data
+                                .filter(function (d) {
+                                    var target_date = new Date(d.time);
+                                    var left = new Date(current_dates.start)
+                                    var right = new Date(current_dates.end)
+
+                                    return  left <= target_date && target_date <= right
+                                })
+                                .map(function (d) {
+                                        return {
+                                            'x': parseFloat(d.latitude),
+                                            'y': parseFloat(d.longitude),
+                                        }
+                                }).slice(0,1)
+                        }
+                    })
             },
-            get_labels : function () {
+            get_labels: function () {
                 return this.series.map(function (r) {
                     return {
                         seriesName: r.device.id,

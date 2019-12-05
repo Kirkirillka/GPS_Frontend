@@ -1,7 +1,9 @@
 <template>
-    <div>
-        <b-table striped hover :items="get_clients"></b-table>
-    </div>
+    <b-container>
+        <b-row>
+            <b-table striped hover :items="get_clients" :fields="fields"></b-table>
+        </b-row>
+    </b-container>
 </template>
 
 <script>
@@ -13,7 +15,15 @@
         name: "ClientsList",
         data: function () {
             return {
-                clients: []
+                fields: [
+                    {
+                        key: "id",
+                        label: "Registered Clients",
+                        sortable: true
+                    }
+                ],
+                clients: [],
+
             }
         },
         methods: {

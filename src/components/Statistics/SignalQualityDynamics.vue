@@ -12,7 +12,7 @@
 
     export default {
         name: "SignalQualityDynamics",
-        props: ["series"],
+        props: ["series", "window_size", "selected_dates"],
         data: function () {
             return {
                 options: {
@@ -87,27 +87,35 @@
                         horizontalAlign: 'right',
                         offsetX: -10
                     }
-                }
+                },
             }
-        }
-        ,
+        },
         computed: {
             get_series: function () {
+                let current_dates = this.selected_dates;
+
                 return this.series.map(function (r) {
                     return {
                         "name": r.device.id,
-                        "data": r.data.map(
-                            function (r) {
-                                return {
-                                    "x": r.time,
-                                    "y": -parseFloat(r.signal)
+                        "data": r.data
+                            .filter(function (d) {
+                                var target_date = new Date(d.time);
+                                var left = new Date(current_dates.start)
+                                var right = new Date(current_dates.end)
+
+                                return left <= target_date && target_date <= right
+                            }).map(
+                                function (r) {
+                                    return {
+                                        "x": r.time,
+                                        "y": -parseFloat(r.signal)
+                                    }
                                 }
-                            }
-                        ).slice(0, 20)
+                            )
                     }
-                })
+                }).slice(0, this.window_size)
+
             }
-            ,
         }
         ,
     }

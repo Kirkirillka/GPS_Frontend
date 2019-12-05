@@ -1,25 +1,48 @@
 <template>
-    <div>
 
-        <b-button v-on:click="fetch_info_by_client">Fetch new data</b-button>
+    <b-container fluid>
+        <b-row>
+            <b-col md="3">
 
-        <b-container>
+                <ClientsList></ClientsList>
+                <b-card bg-variant="light">
+                    <DateControl v-model="selected_dates"></DateControl>
+                    <PollingControl v-model="is_polling"></PollingControl>
+                    <WindowSizeControl v-model="window_size"></WindowSizeControl>
+                    <RefreshTimeControl v-model="refresh_timeout"></RefreshTimeControl>
+                </b-card>
+                <b-card>
 
-            <LastClientsPosition
-                    v-bind:series="clients_data">
-            </LastClientsPosition>
+                    <OperationControl v-on:data-fetch="fetch_info_by_client"></OperationControl>
 
-            <SignalQualityDynamics
-                    v-bind:series="clients_data">
-            </SignalQualityDynamics>
+                </b-card>
 
-            <SignalQualityGeoPosition
-                    v-bind:series="clients_data">
-            </SignalQualityGeoPosition>
-        </b-container>
+            </b-col>
+            <b-col md="8">
+                <SignalQualityGeoPosition
+                        v-bind:series="clients_data"
+                        v-bind:window_size="window_size"
+                        v-bind:selected_dates="selected_dates">
+                </SignalQualityGeoPosition>
+
+                <SignalQualityDynamics
+                        v-bind:series="clients_data"
+                        v-bind:window_size="window_size"
+                        v-bind:selected_dates="selected_dates">
+                </SignalQualityDynamics>
 
 
-    </div>
+                <LastClientsPosition
+                        v-bind:series="clients_data"
+                        v-bind:window_size="window_size"
+                        v-bind:selected_dates="selected_dates"
+                >
+                </LastClientsPosition>
+
+
+            </b-col>
+        </b-row>
+    </b-container>
 </template>
 
 <script>
@@ -28,8 +51,18 @@
     import LastClientsPosition from "@/components/Statistics/LastClientsPosition";
     import SignalQualityDynamics from "@/components/Statistics/SignalQualityDynamics";
     import SignalQualityGeoPosition from "@/components/Statistics/SignalQualityGeoPosition";
+    import ClientsList from "./ClientsList";
+
+    import DateControl from "./Controls/DateControl";
+    import PollingControl from "./Controls/PollingControl";
+    import WindowSizeControl from "./Controls/WindowSizeControl";
+    import RefreshTimeControl from "./Controls/RefreshTimeControl";
+
+    import OperationControl from "./Controls/OperationControl";
+
 
     import * as axios from "axios";
+    import moment from "moment";
 
 
     export default {
@@ -37,24 +70,68 @@
         components: {
             LastClientsPosition,
             SignalQualityDynamics,
-            SignalQualityGeoPosition
+            SignalQualityGeoPosition,
+            ClientsList,
+            DateControl,
+            PollingControl,
+            WindowSizeControl,
+            OperationControl,
+            RefreshTimeControl
+
         },
         data: function () {
             return {
                 clients_data: [],
-                records_num: 500,
-                refresh_timeout: 4000
+                refresh_timeout: 1,
+                selected_dates: {
+                    start: moment().add(-1, 'days').toDate(),
+                    end: new Date()
+                },
+                is_polling: false,
+                window_size: 20
+            }
+        },
+        watch: {
+            is_polling: function () {
+
+                // eslint-disable-next-line no-console
+                console.log("Stop the previous timer.")
+
+                this.stop_timer()
+
+                if (this.is_polling == true) {
+                    this.start_timer()
+
+                    // eslint-disable-next-line no-console
+                    console.log("Start a new timer.")
+                }
+            },
+            refresh_timeout: function () {
+
+                // eslint-disable-next-line no-console
+                console.log("Reinstalling timer due to refresh time changes.")
+
+                // Check if we have installed timer
+                if (this.timer) {
+                    // Reinstall timer with new refresh timeout
+                    this.stop_timer()
+                    this.start_timer()
+
+                }
             }
         },
         methods: {
             fetch_info_by_client: function () {
-                axios.get("http://localhost:5000/aggr/by_device_id?limit=" + this.records_num)
+                axios.get("http://localhost:5000/aggr/by_device_id?limit=" + this.window_size)
                     .then(response => this.clients_data = response.data);
             },
-        },
-        created: function () {
-            this.fetch_info_by_client();
-            //this.timer = setInterval(this.fetch_info_by_client, this.refresh_timeout)
+            start_timer: function () {
+
+                this.timer = setInterval(this.fetch_info_by_client, this.refresh_timeout * 1000)
+            },
+            stop_timer: function () {
+                clearInterval(this.timer)
+            }
 
         },
         beforeDestroy() {

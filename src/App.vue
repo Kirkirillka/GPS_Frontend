@@ -2,13 +2,9 @@
     <div id="app">
         <b-container fluid>
             <Header>
-
             </Header>
             <b-row>
-                <b-col md="3">
-                    <ClientsList></ClientsList>
-                </b-col>
-                <b-col md="9">
+                <b-col>
                     <StatisticsDataPlane>
                     </StatisticsDataPlane>
                 </b-col>
@@ -19,16 +15,14 @@
 
 <script>
 
-    import ClientsList from "@/components/ClientsList";
     import StatisticsDataPlane from "./components/StatisticsDataPlane";
     import Header from "@/components/Header";
 
     export default {
         name: 'app',
         components: {
-            ClientsList,
             StatisticsDataPlane,
-            Header
+            Header,
         },
         data: function () {
             return {
@@ -46,6 +40,5 @@
         -moz-osx-font-smoothing: grayscale;
         text-align: center;
         color: #2c3e50;
-
     }
 </style>
