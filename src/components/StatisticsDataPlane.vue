@@ -19,27 +19,36 @@
 
             </b-col>
             <b-col md="8">
-                <SignalQualityGeoPosition
-                        v-bind:series="clients_data"
-                        v-bind:window_size="window_size"
-                        v-bind:selected_dates="selected_dates">
-                </SignalQualityGeoPosition>
-
-                <SignalQualityDynamics
-                        v-bind:series="clients_data"
-                        v-bind:window_size="window_size"
-                        v-bind:selected_dates="selected_dates">
-                </SignalQualityDynamics>
-
-
-                <LastClientsPosition
-                        v-bind:series="clients_data"
-                        v-bind:window_size="window_size"
-                        v-bind:selected_dates="selected_dates"
-                >
-                </LastClientsPosition>
-
-
+                <b-card no-body>
+                    <b-tabs pills card>
+                        <b-tab title="Signal Quality Heatmap" active>
+                            <b-card-text>
+                                <SignalQualityGeoPosition
+                                        v-bind:series="clients_data"
+                                        v-bind:window_size="window_size"
+                                        v-bind:selected_dates="selected_dates">
+                                </SignalQualityGeoPosition>
+                            </b-card-text>
+                        </b-tab>
+                        <b-tab title="Signal Level Changes Diagram">
+                            <b-card-text>
+                                <SignalQualityDynamics
+                                        v-bind:series="clients_data"
+                                        v-bind:window_size="window_size"
+                                        v-bind:selected_dates="selected_dates">
+                                </SignalQualityDynamics>
+                            </b-card-text>
+                        </b-tab>
+                        <b-tab title="Last Known Clients Position">
+                            <LastClientsPosition
+                                    v-bind:series="clients_data"
+                                    v-bind:window_size="window_size"
+                                    v-bind:selected_dates="selected_dates"
+                            >
+                            </LastClientsPosition>
+                        </b-tab>
+                    </b-tabs>
+                </b-card>
             </b-col>
         </b-row>
     </b-container>
