@@ -24,6 +24,7 @@
                     chart: {
                         type: "line",
                         stacked: true,
+                        width: 200,
                         zoom: {
                             enabled: false
                         },
@@ -74,11 +75,6 @@
                             }
                         }
                     },
-                    title: {
-                        text: 'Irregular Data in Time Series',
-                        align: 'left',
-                        offsetX: 14
-                    },
                     tooltip: {
                         shared: true
                     },
@@ -91,17 +87,23 @@
             }
         },
         computed: {
+            get_window_size: function(){
+                return this.windows_size
+            },
             get_series: function () {
-                let current_dates = this.selected_dates;
+                let scope = this
+
 
                 return this.series.map(function (r) {
+
+
                     return {
                         "name": r.device.id,
-                        "data": r.data
+                        "data": r.data.slice(0, scope.window_size)
                             .filter(function (d) {
                                 var target_date = new Date(d.time);
-                                var left = new Date(current_dates.start)
-                                var right = new Date(current_dates.end)
+                                var left = new Date(scope.selected_dates.start)
+                                var right = new Date(scope.selected_dates.end)
 
                                 return left <= target_date && target_date <= right
                             }).map(
@@ -113,7 +115,8 @@
                                 }
                             )
                     }
-                }).slice(0, this.window_size)
+                })
+
 
             }
         }
