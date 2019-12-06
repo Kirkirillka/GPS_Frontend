@@ -23,7 +23,7 @@
                     }
                 ],
                 clients: [],
-
+                refresh_timeout: 4
             }
         },
         methods: {
@@ -39,6 +39,7 @@
         },
         mounted: function () {
             this.fetch_clients()
+            this.timer = setInterval(this.fetch_clients, this.refresh_timeout * 1000)
         }
     }
 </script>
