@@ -1,15 +1,10 @@
 <template>
     <div id="app">
-        <b-container fluid>
-            <Header>
-            </Header>
-            <b-row>
-                <b-col>
-                    <StatisticsDataPlane>
-                    </StatisticsDataPlane>
-                </b-col>
-            </b-row>
-        </b-container>
+        <Header>
+        </Header>
+
+        <StatisticsDataPlane>
+        </StatisticsDataPlane>
     </div>
 </template>
 

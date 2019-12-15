@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="p-3">
         <apexchart :options="options" :series="get_series"></apexchart>
     </div>
 </template>
@@ -24,7 +24,7 @@
                     chart: {
                         type: "line",
                         stacked: true,
-                        width: 200,
+                        height: 700,
                         zoom: {
                             enabled: false
                         },

@@ -1,4 +1,5 @@
 <template>
+    <div class="p-3">
     <b-form-group
             label="Refresh Timeout"
             v-bind:description="'Chosed time in seconds: ' + refresh_timeout"
@@ -12,6 +13,7 @@
                       v-on:input="updateValue"
         ></b-form-input>
     </b-form-group>
+    </div>
 </template>
 
 <script>

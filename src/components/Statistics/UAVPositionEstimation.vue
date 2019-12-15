@@ -1,14 +1,15 @@
 <!--Credits : http://bl.ocks.org/weiglemc/6185069-->
 
 <template>
-    <div id="estimation-entry">
+    <div class="p-3">
+        <div id="estimation-entry">
+        </div>
     </div>
 </template>
 
 <script>
 
-    import * as d3 from 'd3v4';
-    import * as _ from 'underscore';
+    import * as Plotly from "plotly.js-dist";
 
     export default {
         name: "UAVPositionEstimation",
@@ -34,182 +35,48 @@
 
         methods: {
             draw_estimations: function () {
+                var trace1 = {
+                    x: this.get_series.map(d => d.x),
+                    y: this.get_series.map(d => d.y),
+                    mode: 'markers',
+                    type: 'scatter',
+                    name: 'UEs\' signal',
+
+                    marker: {
+                        size: 12,
+                        color: this.get_series.map(d => d.signal),
+                    }
+                };
+
+                var trace2 = {
+                    x: this.get_estimates_for_uavs.map(d => d.x),
+                    y: this.get_estimates_for_uavs.map(d => d.y),
+                    mode: 'markers',
+                    type: 'scatter',
+                    name: 'Estimations',
+                    marker: {size: 20}
+                };
 
 
-                // delete previous objects
-                d3.select("#estimation-entry").selectAll("*").remove()
+                var data = [trace1, trace2];
 
-                var margin = {top: 20, right: 20, bottom: 30, left: 40},
-                    width = 700 - margin.left - margin.right,
-                    height = 700 - margin.top - margin.bottom;
+                var layout = {
+                    title: 'UEs last positions and estimated locations for UAVs',
+                    autosize: true,
+                    height: 700,
+                    legend: {
+                        y: 0.5,
+                        yref: 'paper',
+                        font: {
+                            family: 'Arial, sans-serif',
+                            size: 10,
+                            color: 'grey',
+                        }
+                    },
+                };
 
-                /*
-                 * value accessor - returns the value to encode for a given data object.
-                 * scale - maps value to a visual display encoding, such as a pixel position.
-                 * map function - maps from data value to display value
-                 * axis - sets up axis
-                 */
+                Plotly.newPlot('estimation-entry', data, layout);
 
-                // setup x
-                var xValue = function (d) {
-                        return d.x;
-                    }, // data -> value
-                    xScale = d3.scaleLinear().range([0, width]), // value -> display
-                    xMap = function (d) {
-                        return xScale(xValue(d));
-                    }, // data -> display
-                    xAxis = d3.axisBottom().scale(xScale);
-
-                // setup y
-                var yValue = function (d) {
-                        return d.y;
-                    }, // data -> value
-                    yScale = d3.scaleLinear().range([height, 0]), // value -> display
-                    yMap = function (d) {
-                        return yScale(yValue(d));
-                    }, // data -> display
-                    yAxis = d3.axisLeft().scale(yScale);
-
-                // setup fill color
-                var cValue = function (d) {
-                    return d.signal;
-                }
-
-                var color = d3.interpolateHcl("red", "blue");
-
-                // add the graph canvas to the body of the webpage
-                var svg = d3.select("#estimation-entry").append("svg")
-                    .attr("width", width + margin.left + margin.right)
-                    .attr("height", height + margin.top + margin.bottom)
-                    .append("g")
-                    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-                // add the tooltip area to the webpage
-                var tooltip = d3.select("#estimation-entry").append("div")
-                    .attr("class", "tooltip")
-                    .style("opacity", 0);
-
-                // don't want dots overlapping axis, so add in buffer to data domain
-                let all_data = _.union(this.get_series, this.get_estimates_for_uavs)
-                xScale.domain([d3.min(all_data, xValue) - 1, d3.max(all_data, xValue) + 1]);
-                yScale.domain([d3.min(all_data, yValue) - 1, d3.max(all_data, yValue) + 1]);
-
-
-                // x-axis
-                svg.append("g")
-                    .attr("class", "x axis")
-                    .attr("transform", "translate(0," + height + ")")
-                    .call(xAxis)
-                    .append("text")
-                    .attr("class", "label")
-                    .attr("x", width)
-                    .attr("y", -6)
-                    .style("text-anchor", "end")
-                    .text("XXXXXXXX");
-
-                // y-axis
-                svg.append("g")
-                    .attr("class", "y axis")
-                    .call(yAxis)
-                    .append("text")
-                    .attr("class", "label")
-                    .attr("transform", "rotate(-90)")
-                    .attr("y", 6)
-                    .attr("dy", ".71em")
-                    .style("text-anchor", "end")
-                    .text("y");
-
-                // Block for UEs
-                let data = this.get_series
-
-                {
-
-                    // draw dots
-                    svg.append("g").selectAll(".dot")
-                        .data(data)
-                        .enter().append("circle")
-                        .attr("class", "dot")
-                        .attr("r", 10)
-                        .attr("cx", xMap)
-                        .attr("cy", yMap)
-                        .style("fill", function (d) {
-                            return color(cValue(d));
-                        })
-                        .on("mouseover", function (d) {
-                            tooltip.transition()
-                                .duration(200)
-                                .style("opacity", .9);
-                            tooltip.html("RSSI:" + parseFloat(d.signal).toFixed(1) + "<br/>" +
-                                "X:" + parseFloat(xValue(d)).toFixed(2) + "<br/>" +
-                                "Y: " + parseFloat(yValue(d)).toFixed(2))
-                                .style("left", (parseInt(d3.select(this).attr("cx")) +200) + "px")
-                                .style("top", (parseInt(d3.select(this).attr("cy")) + 20) + "px");
-                        })
-                        .on("mouseout", function () {
-                            tooltip.transition()
-                                .duration(500)
-                                .style("opacity", 0);
-                        });
-
-                }
-
-                //Block for UAVs
-                data = this.get_estimates_for_uavs
-
-                {
-
-                    // draw dots
-                    svg.append("g").selectAll(".dot")
-                        .data(data)
-                        .enter().append("circle")
-                        .attr("class", "dot")
-                        .attr("r", 20)
-                        .attr("cx", xMap)
-                        .attr("cy", yMap)
-                        .style("fill", 'black')
-                        .on("mouseover", function (d) {
-                            tooltip.transition()
-                                .duration(200)
-                                .style("opacity", .9);
-                            tooltip.html("Suggested position" + "<br/>" +
-                                "X:" + parseFloat(xValue(d)).toFixed(2) + "<br/>" +
-                                "Y: " + parseFloat(yValue(d)).toFixed(2))
-                                .style("left", (parseInt(d3.select(this).attr("cx")) +200) + "px")
-                                .style("top", (parseInt(d3.select(this).attr("cy")) + 20) + "px");
-                        })
-                        .on("mouseout", function () {
-                            tooltip.transition()
-                                .duration(500)
-                                .style("opacity", 0);
-                        });
-
-                }
-
-                // draw legend
-                var legend = svg.selectAll(".legend")
-                //.data(color.domain())
-                    .enter().append("g")
-                    .attr("class", "legend")
-                    .attr("transform", function (d, i) {
-                        return "translate(0," + i * 20 + ")";
-                    });
-
-                // draw legend colored rectangles
-                legend.append("rect")
-                    .attr("x", width - 18)
-                    .attr("width", 18)
-                    .attr("height", 18)
-                    .style("fill", color);
-
-                // draw legend text
-                legend.append("text")
-                    .attr("x", width - 24)
-                    .attr("y", 9)
-                    .attr("dy", ".35em")
-                    .style("text-anchor", "end")
-                    .text(function (d) {
-                        return d;
-                    })
             }
         },
         computed: {

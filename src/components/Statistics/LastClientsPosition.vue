@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="p-3">
         <apexchart :options="options" :series="get_series"></apexchart>
     </div>
 </template>
@@ -29,8 +29,7 @@
             return {
                 options: {
                     chart: {
-                        height: 250,
-                        width: 200,
+                        height: 700,
                         type: 'scatter',
                         zoom: {
                             enabled: true,

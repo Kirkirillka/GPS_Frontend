@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="p-3">
         <b-form-group
                 label-cols-sm="4"
                 label-cols-lg="5"
