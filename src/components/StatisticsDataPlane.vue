@@ -4,24 +4,37 @@
         <b-row>
             <b-col md="3">
 
-                <ClientsList></ClientsList>
-                <b-card bg-variant="light">
+                <b-container>
+
+
                     <DateControl v-model="selected_dates"></DateControl>
                     <PollingControl v-model="is_polling"></PollingControl>
                     <WindowSizeControl v-model="window_size"></WindowSizeControl>
                     <RefreshTimeControl v-model="refresh_timeout"></RefreshTimeControl>
-                </b-card>
-                <b-card>
 
-                    <OperationControl v-on:data-fetch="fetch_info_by_client"></OperationControl>
 
-                </b-card>
+                    <OperationControl v-on:data-fetch="update_data"
+                    ></OperationControl>
+
+                    <ClientsList></ClientsList>
+                </b-container>
 
             </b-col>
             <b-col md="8">
                 <b-card no-body>
                     <b-tabs pills card>
-                        <b-tab title="Signal Quality Heatmap" active>
+                        <b-tab title="UAVs Position Estimation" active>
+                            <b-card-text>
+                                <UAVPositionEstimation
+                                        v-bind:series="clients_data"
+                                        v-bind:window_size="window_size"
+                                        v-bind:selected_dates="selected_dates"
+                                        v-bind:estimations="estimations"
+                                >
+                                </UAVPositionEstimation>
+                            </b-card-text>
+                        </b-tab>
+                        <b-tab title="Signal Quality Heatmap">
                             <b-card-text>
                                 <SignalQualityGeoPosition
                                         v-bind:series="clients_data"
@@ -60,6 +73,8 @@
     import LastClientsPosition from "@/components/Statistics/LastClientsPosition";
     import SignalQualityDynamics from "@/components/Statistics/SignalQualityDynamics";
     import SignalQualityGeoPosition from "@/components/Statistics/SignalQualityGeoPosition";
+    import UAVPositionEstimation from "./Statistics/UAVPositionEstimation";
+
     import ClientsList from "./ClientsList";
 
     import DateControl from "./Controls/DateControl";
@@ -85,19 +100,22 @@
             PollingControl,
             WindowSizeControl,
             OperationControl,
-            RefreshTimeControl
+            RefreshTimeControl,
+            UAVPositionEstimation
 
         },
         data: function () {
             return {
                 clients_data: [],
+                estimations: [],
                 refresh_timeout: 1,
                 selected_dates: {
                     start: moment().add(-1, 'days').toDate(),
                     end: new Date()
                 },
                 is_polling: false,
-                window_size: 20
+                window_size: 20,
+                timers: []
             }
         },
         watch: {
@@ -121,7 +139,7 @@
                 console.log("Reinstalling timer due to refresh time changes.")
 
                 // Check if we have installed timer
-                if (this.timer) {
+                if (this.timers) {
                     // Reinstall timer with new refresh timeout
                     this.stop_timer()
                     this.start_timer()
@@ -131,15 +149,31 @@
         },
         methods: {
             fetch_info_by_client: function () {
-                axios.get("http://localhost:5000/aggr/by_device_id?limit=" + this.window_size)
+                axios.get("http://localhost:5000/aggr/by_device_id?")
                     .then(response => this.clients_data = response.data);
+            },
+            fetch_estimates: function () {
+                axios.get("http://localhost:5000/estimations/all")
+                    .then(response => this.estimations = response.data);
+            },
+            update_data: function () {
+                this.fetch_estimates()
+                this.fetch_info_by_client()
             },
             start_timer: function () {
 
-                this.timer = setInterval(this.fetch_info_by_client, this.refresh_timeout * 1000)
+                var timers = this.timers
+
+                timers.push(setInterval(this.update_data, this.refresh_timeout * 1000))
             },
             stop_timer: function () {
-                clearInterval(this.timer)
+
+                if (typeof this.timers == 'object') {
+                    this.timers.forEach(clearInterval)
+                }
+
+                // Delete timers
+                this.timers = []
             }
 
         },
