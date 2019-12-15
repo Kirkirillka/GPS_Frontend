@@ -1,17 +1,19 @@
 <template>
-    <b-form-group
-            label="Window Size"
-            v-bind:description="'Chosed size: ' + window_size"
-            label-cols-lg="5">
-                <b-form-input type="range"
-                              size="sm"
-                              v-model="window_size"
-                              :min="window_min"
-                              :max="window_max"
-                              :formatter="IntegerFormat"
-                              v-on:input="updateValue"
-                ></b-form-input>
-    </b-form-group>
+    <div class="p-3">
+        <b-form-group
+                label="Window Size"
+                v-bind:description="'Chosed size: ' + window_size"
+                label-cols-lg="5">
+            <b-form-input type="range"
+                          size="sm"
+                          v-model="window_size"
+                          :min="window_min"
+                          :max="window_max"
+                          :formatter="IntegerFormat"
+                          v-on:input="updateValue"
+            ></b-form-input>
+        </b-form-group>
+    </div>
 </template>
 
 <script>

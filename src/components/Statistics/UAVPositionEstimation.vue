@@ -1,7 +1,9 @@
 <!--Credits : http://bl.ocks.org/weiglemc/6185069-->
 
 <template>
-    <div id="estimation-entry">
+    <div class="p-3">
+        <div id="estimation-entry">
+        </div>
     </div>
 </template>
 
@@ -59,7 +61,9 @@
                 var data = [trace1, trace2];
 
                 var layout = {
-                    title: 'Signal Quality in the plane',
+                    title: 'UEs last positions and estimated locations for UAVs',
+                    autosize: true,
+                    height: 700,
                     legend: {
                         y: 0.5,
                         yref: 'paper',

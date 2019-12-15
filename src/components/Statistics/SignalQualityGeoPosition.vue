@@ -1,7 +1,9 @@
 <!--Credits  :http://bl.ocks.org/supereggbert/aff58196188816576af0-->
 
 <template>
-    <div id="signal-geo-contour">
+    <div class="p-3">
+        <div id="signal-geo-contour">
+        </div>
     </div>
 </template>
 
@@ -62,7 +64,7 @@
                 var layout = {
                     title: 'Signal Quality in the plane',
                     autosize: true,
-                    height: 1000,
+                    height: 700,
                 };
                 Plotly.newPlot('signal-geo-contour', data, layout, {responsive: true});
             },

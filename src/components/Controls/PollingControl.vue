@@ -1,11 +1,13 @@
 <template>
-    <b-form-group
-            description="Set to start continuous pooling data"
-            label="Polling Switcher"
-            label-cols-lg="5">
-        <b-checkbox switch v-model="is_polling" v-on:input="updateValue">
-        </b-checkbox>
-    </b-form-group>
+    <div class="p-3">
+        <b-form-group
+                description="Set to start continuous pooling data"
+                label="Polling Switcher"
+                label-cols-lg="5">
+            <b-checkbox switch v-model="is_polling" v-on:input="updateValue">
+            </b-checkbox>
+        </b-form-group>
+    </div>
 </template>
 
 <script>
