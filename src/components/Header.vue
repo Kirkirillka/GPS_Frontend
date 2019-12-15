@@ -7,7 +7,7 @@
 
             <b-collapse id="nav-collapse" is-nav>
                 <b-navbar-nav>
-                    <b-nav-item href="#">How to use</b-nav-item>
+                    <b-nav-item href="#" disabled>How to use</b-nav-item>
                     <b-nav-item href="#" disabled>Documentation</b-nav-item>
                 </b-navbar-nav>
 
