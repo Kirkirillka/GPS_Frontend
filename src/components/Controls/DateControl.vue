@@ -65,8 +65,8 @@
             updateValue: function () {
 
                 var message = {
-                    start: this.start,
-                    end: this.end
+                    start: new Date(this.start),
+                    end: new Date(this.end)
                 }
 
                 this.$emit('input', message);
