@@ -78,7 +78,7 @@
     import moment from "moment";
 
     export default {
-        name: "StatisticsDataPlane",
+        name: "DataVisualPlane",
         components: {
             ClientMovementTrajectory,
             SignalQualityDynamics,
