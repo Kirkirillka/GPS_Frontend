@@ -22,7 +22,7 @@
         data: function () {
             return {
                 window_size: this.value,
-                window_min: 10,
+                window_min: 5,
                 window_max: 100,
             }
         },

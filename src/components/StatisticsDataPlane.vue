@@ -77,7 +77,6 @@
     import * as axios from "axios";
     import moment from "moment";
 
-
     export default {
         name: "StatisticsDataPlane",
         components: {
@@ -97,10 +96,10 @@
             return {
                 clients_data: [],
                 estimations: [],
-                refresh_timeout: 1,
+                refresh_timeout: 5,
                 selected_dates: {
                     start: moment().add(-1, 'days').toDate(),
-                    end: new Date()
+                    end: moment().add(1, 'days').toDate(),
                 },
                 is_polling: false,
                 window_size: 20,
@@ -137,16 +136,29 @@
             }
         },
         mounted: function () {
-            this.fetch_info_by_client();
-            this.fetch_estimates();
+            this.update_data()
         },
         methods: {
             fetch_info_by_client: function () {
-                axios.get("http://localhost:5000/aggr/by_device_id?")
+
+                var data = {
+                    limits: this.window_size,
+                    start_date: new Date(this.selected_dates.start),
+                    end_date: new Date(this.selected_dates.end),
+                };
+
+                axios.post("http://localhost:5000/aggr/by_device_id", data)
                     .then(response => this.clients_data = response.data);
             },
             fetch_estimates: function () {
-                axios.get("http://localhost:5000/estimations/all")
+
+                var data = {
+                    limits: this.window_size,
+                    start_date: new Date(this.selected_dates.start),
+                    end_date: new Date(this.selected_dates.end),
+                };
+
+                axios.post("http://localhost:5000/estimations/all", data)
                     .then(response => this.estimations = response.data);
             },
             update_data: function () {

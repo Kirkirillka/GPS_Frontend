@@ -99,11 +99,11 @@
 
                     return {
                         "name": r.device.id,
-                        "data": r.data.slice(0, scope.window_size)
+                        "data": r.data
                             .filter(function (d) {
                                 var target_date = new Date(d.time);
-                                var left = new Date(scope.selected_dates.start)
-                                var right = new Date(scope.selected_dates.end)
+                                var left = scope.selected_dates.start
+                                var right = scope.selected_dates.end
 
                                 return left <= target_date && target_date <= right
                             }).map(
