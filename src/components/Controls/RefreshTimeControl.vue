@@ -7,8 +7,8 @@
         <b-form-input type="number"
                       size="sm"
                       v-model="refresh_timeout"
-                      :max="100"
-                      :min="1"
+                      :max="max_refresh"
+                      :min="min_refresh"
                       :formatter="SecondsFormat"
                       v-on:input="updateValue"
         ></b-form-input>
@@ -21,7 +21,9 @@
         name: "RefreshTimeControl",
         data: function(){
             return {
-                refresh_timeout: this.value
+                refresh_timeout: this.value,
+                min_refresh: 5,
+                max_refresh: 100
             }
         },
         props: ['value'],

@@ -28,9 +28,9 @@
             draw_contour: function () {
 
 
-                let x = this.get_series.map(d => d.x).slice(0, this.window_size)
-                let y = this.get_series.map(d => d.y).slice(0, this.window_size)
-                let z = this.get_series.map(d => d.z).slice(0, this.window_size)
+                let x = this.get_series.map(d => d.x).slice(0,this.windows_size)
+                let y = this.get_series.map(d => d.y).slice(0,this.windows_size)
+                let z = this.get_series.map(d => d.z).slice(0,this.windows_size)
 
 
                 var data = [{
