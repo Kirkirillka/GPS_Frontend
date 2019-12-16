@@ -43,11 +43,11 @@
                             </SignalQualityDynamics>
                         </b-tab>
                         <b-tab title="Last Known Clients Position">
-                            <LastClientsPosition
+                            <ClientMovementTrajectory
                                     v-bind:series="clients_data"
                                     v-bind:window_size="window_size"
                                     v-bind:selected_dates="selected_dates">
-                            </LastClientsPosition>
+                            </ClientMovementTrajectory>
                         </b-tab>
                     </b-tabs>
                 </div>
@@ -59,7 +59,7 @@
 <script>
 
 
-    import LastClientsPosition from "@/components/Statistics/LastClientsPosition";
+    import ClientMovementTrajectory from "./Statistics/ClientMovementTrajectory";
     import SignalQualityDynamics from "@/components/Statistics/SignalQualityDynamics";
     import SignalQualityGeoPosition from "@/components/Statistics/SignalQualityGeoPosition";
     import UAVPositionEstimation from "./Statistics/UAVPositionEstimation";
@@ -80,7 +80,7 @@
     export default {
         name: "StatisticsDataPlane",
         components: {
-            LastClientsPosition,
+            ClientMovementTrajectory,
             SignalQualityDynamics,
             SignalQualityGeoPosition,
             ClientsList,

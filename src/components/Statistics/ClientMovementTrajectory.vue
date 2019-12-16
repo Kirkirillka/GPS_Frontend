@@ -6,10 +6,10 @@
 
 <script>
 
-    //import * as d3 from "d3";
+
 
     export default {
-        name: "LastClientsPosition",
+        name: "ClientMovementTrajectory",
         props: {
             series: {
                 type: Array,
@@ -43,7 +43,7 @@
                         tickAmount: 10,
                         labels: {
                             formatter: function (val) {
-                                return parseFloat(val).toFixed(2);
+                                return parseFloat(val).toFixed(5);
                             }
                         }
                     },
@@ -51,7 +51,7 @@
                         tickAmount: 10,
                         labels: {
                             formatter: function (val) {
-                                return parseFloat(val).toFixed(2);
+                                return parseFloat(val).toFixed(5);
                             }
                         }
                     }
@@ -81,7 +81,7 @@
                                             'x': parseFloat(d.latitude),
                                             'y': parseFloat(d.longitude),
                                         }
-                                }).slice(0,1)
+                                })
                         }
                     })
             },
