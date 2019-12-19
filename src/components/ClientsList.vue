@@ -1,7 +1,7 @@
 <template>
     <div>
         <h6>Registered Clients</h6>
-        <b-table small simple striped hover :items="get_clients" :fields="fields"></b-table>
+        <b-table small simple striped hover :items="get_clients.sort" :fields="fields"></b-table>
     </div>
 </template>
 
