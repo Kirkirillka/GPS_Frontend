@@ -13,7 +13,8 @@
 
                 </OperationControl>
 
-                <ClientsList></ClientsList>
+                <ClientsList v-bind:refresh_timeout="refresh_timeout"></ClientsList>
+                <StatisticsPlane v-bind:refresh_timeout="refresh_timeout"></StatisticsPlane>
 
             </b-col>
             <b-col md="8">
@@ -42,7 +43,7 @@
                                     v-bind:selected_dates="selected_dates">
                             </SignalQualityDynamics>
                         </b-tab>
-                        <b-tab title="Last Known Clients Position">
+                        <b-tab title="Clients Movement Trajectory">
                             <ClientMovementTrajectory
                                     v-bind:series="clients_data"
                                     v-bind:window_size="window_size"
@@ -76,10 +77,12 @@
 
     import * as axios from "axios";
     import moment from "moment";
+    import StatisticsPlane from "./Statistics/StatisticsPlane";
 
     export default {
-        name: "StatisticsDataPlane",
+        name: "DataVisualPlane",
         components: {
+            StatisticsPlane,
             ClientMovementTrajectory,
             SignalQualityDynamics,
             SignalQualityGeoPosition,
@@ -103,7 +106,11 @@
                 },
                 is_polling: false,
                 window_size: 20,
-                timers: []
+                timers: [],
+                stat: {
+                    data: 0,
+                    estimations: 0,
+                },
             }
         },
         watch: {
@@ -150,6 +157,11 @@
                 axios.post("http://localhost:5000/aggr/by_device_id", data)
                     .then(response => this.clients_data = response.data);
             },
+            fetch_msg_statistics : function () {
+                axios.get("http://localhost:5000/stat")
+                    .then(response => this.stat = response.data)
+
+            },
             fetch_estimates: function () {
 
                 var data = {
@@ -162,6 +174,7 @@
                     .then(response => this.estimations = response.data);
             },
             update_data: function () {
+                this.fetch_msg_statistics()
                 this.fetch_estimates()
                 this.fetch_info_by_client()
             },

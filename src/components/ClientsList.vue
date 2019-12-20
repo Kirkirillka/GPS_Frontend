@@ -1,9 +1,8 @@
 <template>
-    <b-container>
-        <b-row>
-            <b-table striped hover :items="get_clients" :fields="fields"></b-table>
-        </b-row>
-    </b-container>
+    <div>
+        <h6>Registered Clients</h6>
+        <b-table small simple striped hover :items="get_clients.sort" :fields="fields"></b-table>
+    </div>
 </template>
 
 <script>
@@ -13,17 +12,22 @@
 
     export default {
         name: "ClientsList",
+        props: {
+            refresh_timeout: {
+                type: Number,
+                default: 1
+            },
+        },
         data: function () {
             return {
                 fields: [
                     {
                         key: "id",
-                        label: "Registered Clients",
+                        label: "Unique IDs",
                         sortable: true
                     }
                 ],
                 clients: [],
-                refresh_timeout: 4
             }
         },
         methods: {
@@ -38,8 +42,7 @@
             }
         },
         mounted: function () {
-            this.fetch_clients()
-            //this.timer = setInterval(this.fetch_clients, this.refresh_timeout * 1000)
+            this.timer = setInterval(this.fetch_clients, this.refresh_timeout * 1000)
         }
     }
 </script>

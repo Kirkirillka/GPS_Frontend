@@ -3,20 +3,20 @@
         <Header>
         </Header>
 
-        <StatisticsDataPlane>
-        </StatisticsDataPlane>
+        <DataVisualPlane>
+        </DataVisualPlane>
     </div>
 </template>
 
 <script>
 
-    import StatisticsDataPlane from "./components/StatisticsDataPlane";
+    import DataVisualPlane from "./components/DataVisualPlane";
     import Header from "@/components/Header";
 
     export default {
         name: 'app',
         components: {
-            StatisticsDataPlane,
+            DataVisualPlane,
             Header,
         },
         data: function () {
