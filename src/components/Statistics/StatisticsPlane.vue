@@ -27,7 +27,7 @@
         ,
         methods: {
             fetch_msg_statistics: function () {
-                axios.get("http://localhost:5000/stat")
+                axios.get("http://localhost:5000/stats")
                     .then(response => this.stat = response.data)
 
             }
