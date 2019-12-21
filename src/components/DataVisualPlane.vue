@@ -107,10 +107,6 @@
                 is_polling: false,
                 window_size: 20,
                 timers: [],
-                stat: {
-                    data: 0,
-                    estimations: 0,
-                },
             }
         },
         watch: {
@@ -157,11 +153,6 @@
                 axios.post("http://localhost:5000/aggr/by_device_id", data)
                     .then(response => this.clients_data = response.data);
             },
-            fetch_msg_statistics : function () {
-                axios.get("http://localhost:5000/stat")
-                    .then(response => this.stat = response.data)
-
-            },
             fetch_estimates: function () {
 
                 var data = {
@@ -174,7 +165,6 @@
                     .then(response => this.estimations = response.data);
             },
             update_data: function () {
-                this.fetch_msg_statistics()
                 this.fetch_estimates()
                 this.fetch_info_by_client()
             },
