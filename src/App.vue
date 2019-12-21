@@ -1,23 +1,44 @@
 <template>
     <div id="app">
-        <Header>
-        </Header>
+        <b-container>
+            <b-row>
+                <b-col>
+                    <NavigationView/>
+                </b-col>
+            </b-row>
+            <b-row>
+                <b-col>
+                    <MainMenuView/>
+                </b-col>
+                <b-col>
+                    <GraphicsView/>
+                </b-col>
 
-        <DataVisualPlane>
-        </DataVisualPlane>
+            </b-row>
+            <b-row>
+                <b-col>
+                    <StatisticsView/>
+                </b-col>
+            </b-row>
+        </b-container>
+
     </div>
 </template>
 
 <script>
 
-    import DataVisualPlane from "./components/DataVisualPlane";
-    import Header from "@/components/Header";
+    import NavigationView from "./components/View/NavigationView";
+    import GraphicsView from "./components/View/GraphicsView";
+    import MainMenuView from "./components/View/MainMenuView";
+    import StatisticsView from "./components/View/StatisticsView";
 
     export default {
         name: 'app',
         components: {
-            DataVisualPlane,
-            Header,
+            GraphicsView,
+            MainMenuView,
+            StatisticsView,
+            NavigationView,
         },
         data: function () {
             return {
