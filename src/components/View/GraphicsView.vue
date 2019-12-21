@@ -9,7 +9,6 @@
 
 <script>
 
-
     import MovementTrajectoryFigure from "./Figures/MovementTrajectoryFigure";
     import SignalQualityChangingFigure from "./Figures/SignalQualityChangingFigure";
     import SignalQualityGPSFigure from "./Figures/SignalQualityGPSFigure";

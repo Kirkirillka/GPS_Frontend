@@ -1,16 +1,13 @@
 <template>
-    <ControlSubMenu></ControlSubMenu>
+    <div></div>
 </template>
 
 <script>
 
-    import ControlSubMenu from "./Submenus/ControlSubMenu";
 
     export default {
         name: "MenuView",
-        components: {
-            ControlSubMenu
-        }
+        components: {}
     }
 </script>
 
