@@ -17,6 +17,7 @@
         data: function () {
             return {
                 estimation_color: 'black',
+                ues_color: 'blue'
             }
         },
         watch: {
@@ -38,13 +39,16 @@
                 var trace1 = {
                     x: this.get_series.map(d => d.x),
                     y: this.get_series.map(d => d.y),
-                    mode: 'markers',
+                    mode: 'markers+text',
                     type: 'scatter',
-                    name: 'UEs\' signal',
+                    name: 'UE',
+                    text: this.get_series.map(d => d.id.slice(0,10)),
+                    textposition: 'top',
 
                     marker: {
                         size: 12,
-                        color: this.get_series.map(d => d.signal),
+                        color: this.ues_color
+
                     }
                 };
 
@@ -53,8 +57,11 @@
                     y: this.get_estimates_for_uavs.map(d => d.y),
                     mode: 'markers',
                     type: 'scatter',
-                    name: 'Estimations',
-                    marker: {size: 20}
+                    name: 'UAV',
+                    marker: {
+                        size: 20,
+                        color: this.estimation_color
+                    }
                 };
 
 
@@ -85,19 +92,25 @@
                 let current_dates = this.selected_dates;
 
                 return this.series.flatMap(function (r) {
-                    return r.data.filter(function (d) {
+                    let data_by_client = r.data.filter(function (d) {
                         var target_date = new Date(d.time);
                         var left = new Date(current_dates.start)
                         var right = new Date(current_dates.end)
 
                         return left <= target_date && target_date <= right
-                    }).flatMap(function (d) {
+                    }).map(function (d) {
                         return {
                             'x': parseFloat(d.latitude),
                             'y': parseFloat(d.longitude),
-                            'signal': d.signal
                         }
-                    }).slice(0, 1)
+                    }
+                    ).map( function (f) {
+                        f.id = r.device.id
+
+                        return f
+                    }).slice(0,1)
+
+                    return data_by_client
                 })
             }
             ,
