@@ -10,39 +10,29 @@
 <script>
 
     import * as Plotly from "plotly.js-dist";
+    import {mapGetters} from 'vuex';
 
     export default {
         name: "UAVPositionEstimation",
-        props: ["series", "window_size", "selected_dates", "estimations"],
         data: function () {
             return {
                 estimation_color: 'black',
                 ues_color: 'blue'
             }
         },
-        watch: {
-            get_series: function () {
-                // eslint-disable-next-line no-console
-                this.draw_estimations()
-            },
-            get_estimates_for_uavs: function () {
-                // eslint-disable-next-line no-console
-                this.draw_estimations()
-            }
-        },
         mounted: function () {
-            this.draw_estimations()
+            this.draw()
         },
 
         methods: {
-            draw_estimations: function () {
+            draw: function () {
                 var trace1 = {
-                    x: this.get_series.map(d => d.x),
-                    y: this.get_series.map(d => d.y),
+                    x: this.get_ues_locations.map(d => d.x),
+                    y: this.get_ues_locations.map(d => d.y),
                     mode: 'markers+text',
                     type: 'scatter',
                     name: 'UE',
-                    text: this.get_series.map(d => d.id.slice(0,10)),
+                    text: this.get_ues_locations.map(d => d.id.slice(0, 6)),
                     textposition: 'top',
 
                     marker: {
@@ -53,8 +43,8 @@
                 };
 
                 var trace2 = {
-                    x: this.get_estimates_for_uavs.map(d => d.x),
-                    y: this.get_estimates_for_uavs.map(d => d.y),
+                    x: this.get_uavs_locations.map(d => d.x),
+                    y: this.get_uavs_locations.map(d => d.y),
                     mode: 'markers',
                     type: 'scatter',
                     name: 'UAV',
@@ -86,50 +76,52 @@
 
             }
         },
-        computed: {
-            get_series: function () {
-
-                let current_dates = this.selected_dates;
-
-                return this.series.flatMap(function (r) {
-                    let data_by_client = r.data.filter(function (d) {
-                        var target_date = new Date(d.time);
-                        var left = new Date(current_dates.start)
-                        var right = new Date(current_dates.end)
-
-                        return left <= target_date && target_date <= right
-                    }).map(function (d) {
-                        return {
-                            'x': parseFloat(d.latitude),
-                            'y': parseFloat(d.longitude),
-                        }
-                    }
-                    ).map( function (f) {
-                        f.id = r.device.id
-
-                        return f
-                    }).slice(0,1)
-
-                    return data_by_client
-                })
+        watch: {
+            get_ues_locations: function () {
+                this.draw()
             }
-            ,
-            get_estimates_for_uavs: function () {
-                var datarow = this.estimations
-                    .filter(r => r.payload.target == 'uav')
-                    .slice(0, 1).pop()
-
-                if (typeof datarow != 'undefined' && typeof datarow.payload != 'undefined') {
-                    return datarow.payload.suggested
-                        .flatMap(function (d) {
+        },
+        computed: {
+            ...mapGetters("control", {
+                start: "START_DATETIME_FILTER",
+                end: "END_DATETIME_FILTER",
+                window_size: "WINDOW_SIZE",
+                refresh_timeout: "REFRESH_TIMEOUT"
+            }),
+            ...mapGetters("data", {
+                clients_locations: "CLIENTS_LOCATIONS",
+                uavs_locations: "UAVS_LOCATIONS"
+            }),
+            get_ues_locations: function () {
+                return this.clients_locations.flatMap(function (r) {
+                    let data_by_client = r.data.map(function (d) {
                             return {
                                 'x': parseFloat(d.latitude),
                                 'y': parseFloat(d.longitude),
                             }
-                        })
-                } else {
-                    return []
-                }
+                        }
+                    ).map(function (f) {
+                        f.id = r.device.id
+
+                        return f
+                    }).slice(0, 1)
+
+                    return data_by_client
+                })
+            },
+            get_uavs_locations: function () {
+                let entries = this.uavs_locations
+                    .filter(r => r.payload.target == 'uav')
+                    .flatMap(r => r.payload.suggested.map(function (r) {
+                            return {
+                                'x': parseFloat(r.latitude),
+                                'y': parseFloat(r.longitude),
+                            }
+                        }
+                        )).slice(0,1)
+
+                return entries
+
             }
         }
     }

@@ -11,26 +11,19 @@
 
     //import * as d3 from 'd3v4';
     import * as Plotly from "plotly.js-dist";
+    import {mapGetters} from 'vuex';
 
     export default {
         name: "SignalQualityGeoPosition",
-        props: ["series", "window_size", "selected_dates"],
-        watch: {
-            get_series: function () {
-                this.draw_contour()
-            },
-        },
         mounted: function () {
-            this.draw_contour()
+            this.draw()
         },
 
         methods: {
-            draw_contour: function () {
-
-
-                let x = this.get_series.map(d => d.x).slice(0,this.windows_size)
-                let y = this.get_series.map(d => d.y).slice(0,this.windows_size)
-                let z = this.get_series.map(d => d.z).slice(0,this.windows_size)
+            draw: function () {
+                let x = this.get_ues_locations.map(d => d.x)
+                let y = this.get_ues_locations.map(d => d.y)
+                let z = this.get_ues_locations.map(d => d.z)
 
 
                 var data = [{
@@ -69,19 +62,26 @@
                 Plotly.newPlot('signal-geo-contour', data, layout, {responsive: true});
             },
         },
+        watch: {
+            get_ues_locations: function () {
+                this.draw()
+            }
+        },
         computed: {
-            get_series: function () {
+            ...mapGetters("control", {
+                start: "START_DATETIME_FILTER",
+                end: "END_DATETIME_FILTER",
+                window_size: "WINDOW_SIZE",
+                refresh_timeout: "REFRESH_TIMEOUT"
+            }),
+            ...mapGetters("data", {
+                clients_locations: "CLIENTS_LOCATIONS",
+                uavs_locations: "UAVS_LOCATIONS"
+            }),
 
-                let current_dates = this.selected_dates;
-
-                return this.series.flatMap(function (r) {
-                    return r.data.filter(function (d) {
-                        var target_date = new Date(d.time);
-                        var left = new Date(current_dates.start)
-                        var right = new Date(current_dates.end)
-
-                        return left <= target_date && target_date <= right
-                    }).flatMap(function (d) {
+            get_ues_locations: function () {
+                return this.clients_locations.flatMap(function (r) {
+                    return r.data.flatMap(function (d) {
                         return {
                             'x': parseFloat(d.latitude),
                             'y': parseFloat(d.longitude),

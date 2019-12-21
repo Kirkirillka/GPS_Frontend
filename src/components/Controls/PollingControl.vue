@@ -4,24 +4,26 @@
                 description="Set to start continuous pooling data"
                 label="Polling Switcher"
                 label-cols-lg="5">
-            <b-checkbox switch v-model="is_polling" v-on:input="updateValue">
+            <b-checkbox switch v-bind:oninput="is_polling" v-on:change="updateValue">
             </b-checkbox>
         </b-form-group>
     </div>
 </template>
 
 <script>
+
+    import {mapGetters} from 'vuex';
+
     export default {
         name: "PollingControl",
-        data: function () {
-            return {
-                is_polling: this.value
-            }
+        computed: {
+            ...mapGetters("control", {
+                is_polling: "POLLING",
+            }),
         },
-        props: ['value'],
         methods: {
-            updateValue: function () {
-                this.$emit('input', this.is_polling);
+            updateValue: function (data) {
+                this.$store.commit("control/TOGGLE_PULLING", data);
             },
 
         },

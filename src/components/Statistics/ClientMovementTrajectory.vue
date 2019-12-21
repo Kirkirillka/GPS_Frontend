@@ -6,24 +6,10 @@
 <script>
 
     import * as Plotly from "plotly.js-dist";
+    import {mapGetters} from 'vuex';
 
     export default {
         name: "ClientMovementTrajectory",
-        props: {
-            series: {
-                type: Array,
-                default: function () {
-                    return []
-                }
-            },
-            windows_size: {
-                type: Number,
-                default: 20
-            },
-            selected_dates: {
-                type: Object
-            }
-        },
         data: function () {
             return {}
         },
@@ -31,9 +17,9 @@
             this.draw_scatter()
         },
         watch: {
-           get_series: function(){
-               this.draw_scatter()
-           }
+            get_series: function () {
+                this.draw_scatter()
+            }
         },
         methods: {
             draw_scatter: function () {
@@ -50,42 +36,42 @@
             }
         },
         computed: {
+            ...mapGetters("control", {
+                start: "START_DATETIME_FILTER",
+                end: "END_DATETIME_FILTER",
+                window_size: "WINDOW_SIZE",
+                refresh_timeout: "REFRESH_TIMEOUT"
+            }),
+            ...mapGetters("data", {
+                clients_locations: "CLIENTS_LOCATIONS",
+                uavs_locations: "UAVS_LOCATIONS"
+            }),
+
             get_series: function () {
 
+                let entries = this.clients_locations.map(r => r).map(function (r) {
+                    return {
+                        name: r.device.id.slice(0, 6),
+                        mode: 'markers',
+                        type: 'scatter',
+                        data: r.data
+                            .map(function (d) {
+                                return {
+                                    'x': parseFloat(d.latitude),
+                                    'y': parseFloat(d.longitude),
+                                }
+                            })
+                    }
+                })
 
-                let current_dates = this.selected_dates
-
-                var prepared = this.series
-                    .map(function (r) {
-                        return {
-                            name: r.device.id,
-                            mode: 'markers',
-                            type: 'scatter',
-                            data: r.data
-                                .filter(function (d) {
-                                    var target_date = new Date(d.time);
-                                    var left = new Date(current_dates.start)
-                                    var right = new Date(current_dates.end)
-
-                                    return left <= target_date && target_date <= right
-                                })
-                                .map(function (d) {
-                                    return {
-                                        'x': parseFloat(d.latitude),
-                                        'y': parseFloat(d.longitude),
-                                    }
-                                })
-                        }
-                    })
-
-                return prepared.map( function (d) {
+                return entries.map(function (d) {
                     let x = d.data.map(d => d.x)
                     let y = d.data.map(d => d.y)
 
-                    d.x =x
-                    d.y=y
+                    d.x = x
+                    d.y = y
 
-                    delete  d.data
+                    delete d.data
 
                     return d
 

@@ -8,11 +8,11 @@
 
     import moment from "moment";
     //import * as d3 from "d3v4";
+    import {mapGetters} from 'vuex';
 
 
     export default {
         name: "SignalQualityDynamics",
-        props: ["series", "window_size", "selected_dates"],
         data: function () {
             return {
                 options: {
@@ -71,7 +71,7 @@
                         labels: {
 
                             formatter: function (val, timestamp) {
-                                return moment(new Date(timestamp)).format("DD MMM hh:mm:ss")
+                                return moment(timestamp).format("DD MMM hh:mm:ss")
                             }
                         }
                     },
@@ -87,26 +87,23 @@
             }
         },
         computed: {
-            get_window_size: function(){
-                return this.windows_size
-            },
+
+            ...mapGetters("control", {
+                start: "START_DATETIME_FILTER",
+                end: "END_DATETIME_FILTER",
+                window_size: "WINDOW_SIZE",
+                refresh_timeout: "REFRESH_TIMEOUT"
+            }),
+            ...mapGetters("data", {
+                clients_locations: "CLIENTS_LOCATIONS",
+                uavs_locations: "UAVS_LOCATIONS"
+            }),
+
             get_series: function () {
-                let scope = this
-
-
-                return this.series.map(function (r) {
-
-
+                return this.clients_locations.map(function (r) {
                     return {
-                        "name": r.device.id,
-                        "data": r.data
-                            .filter(function (d) {
-                                var target_date = new Date(d.time);
-                                var left = scope.selected_dates.start
-                                var right = scope.selected_dates.end
-
-                                return left <= target_date && target_date <= right
-                            }).map(
+                        "name": r.device.id.slice(0,6),
+                        "data": r.data.map(
                                 function (r) {
                                     return {
                                         "x": r.time,
