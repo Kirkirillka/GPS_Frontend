@@ -1,11 +1,14 @@
 <template>
-    <div class="p-3">
+    <div>
         <b-form-group
                 label="Refresh Timeout"
                 v-bind:description="'Chosen time in seconds: ' + refresh_timeout"
-                label-cols-lg="5">
-            <b-button v-on:click="decrease" variant="danger">-</b-button>
-            <b-button v-on:click="increase" variant="success">+</b-button>
+                label-size="sm">
+
+            <b-button-group>
+                <b-button v-on:click="decrease" variant="danger">-</b-button>
+                <b-button v-on:click="increase" variant="success">+</b-button>
+            </b-button-group>
         </b-form-group>
     </div>
 </template>
@@ -28,10 +31,10 @@
             }),
         },
         methods: {
-            increase: function(){
+            increase: function () {
                 this.updateValue(this.refresh_timeout + 1)
             },
-            decrease: function() {
+            decrease: function () {
                 this.updateValue(this.refresh_timeout - 1)
             },
             updateValue: function (data) {

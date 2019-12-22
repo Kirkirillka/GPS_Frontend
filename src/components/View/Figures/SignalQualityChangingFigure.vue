@@ -1,5 +1,5 @@
 <template>
-    <div class="p-3">
+    <div>
         <apexchart :options="options" :series="get_series"></apexchart>
     </div>
 </template>
@@ -24,7 +24,8 @@
                     chart: {
                         type: "line",
                         stacked: true,
-                        height: 700,
+                        height: this.height,
+                        width: "100%",
                         zoom: {
                             enabled: false
                         },
@@ -98,19 +99,23 @@
                 clients_locations: "CLIENTS_LOCATIONS",
                 uavs_locations: "UAVS_LOCATIONS"
             }),
+            ...mapGetters("visual", {
+                width: "GET_WIDTH",
+                height: "GET_HEIGHT"
+            }),
 
             get_series: function () {
                 return this.clients_locations.map(function (r) {
                     return {
-                        "name": r.device.id.slice(0,6),
+                        "name": r.device.id.slice(0, 6),
                         "data": r.data.map(
-                                function (r) {
-                                    return {
-                                        "x": r.time,
-                                        "y": -parseFloat(r.signal)
-                                    }
+                            function (r) {
+                                return {
+                                    "x": r.time,
+                                    "y": -parseFloat(r.signal)
                                 }
-                            )
+                            }
+                        )
                     }
                 })
 

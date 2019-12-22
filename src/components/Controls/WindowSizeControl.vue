@@ -1,9 +1,10 @@
 <template>
-    <div class="p-3">
+    <div>
         <b-form-group
                 label="Window Size"
-                v-bind:description="'Chosed size: ' + window_size"
-                label-cols-lg="5">
+                v-bind:description="'Chosen size: ' + window_size"
+                label-size="sm">
+
             <b-form-input type="range"
                           size="sm"
                           v-bind:input="window_size"
@@ -37,6 +38,9 @@
             updateValue: function (data) {
                 this.$store.commit("control/UPDATE_WINDOW_SIZE", data)
             },
+            /**
+             * @return {number}
+             */
             IntegerFormat(value) {
                 return parseInt(value)
             },

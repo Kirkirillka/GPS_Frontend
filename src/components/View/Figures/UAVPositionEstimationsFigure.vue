@@ -1,7 +1,7 @@
 <!--Credits : http://bl.ocks.org/weiglemc/6185069-->
 
 <template>
-    <div class="p-3">
+    <div>
         <div id="estimation-entry">
         </div>
     </div>
@@ -60,19 +60,10 @@
                 var layout = {
                     title: 'UEs last positions and estimated locations for UAVs',
                     autosize: true,
-                    height: 700,
-                    legend: {
-                        y: 0.5,
-                        yref: 'paper',
-                        font: {
-                            family: 'Arial, sans-serif',
-                            size: 10,
-                            color: 'grey',
-                        }
-                    },
+                    height: this.height,
                 };
 
-                Plotly.newPlot('estimation-entry', data, layout);
+                Plotly.newPlot('estimation-entry', data, layout, {responsive: true});
 
             }
         },
@@ -91,6 +82,10 @@
             ...mapGetters("data", {
                 clients_locations: "CLIENTS_LOCATIONS",
                 uavs_locations: "UAVS_LOCATIONS"
+            }),
+            ...mapGetters("visual", {
+                width: "GET_WIDTH",
+                height: "GET_HEIGHT"
             }),
             get_ues_locations: function () {
                 return this.clients_locations.flatMap(function (r) {
@@ -118,7 +113,7 @@
                                 'y': parseFloat(r.longitude),
                             }
                         }
-                        )).slice(0,1)
+                    )).slice(0, 1)
 
                 return entries
 

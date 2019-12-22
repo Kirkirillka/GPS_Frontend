@@ -1,5 +1,7 @@
 <template>
-    <div class="p-3" id="trajectory-entry">
+    <div>
+        <div id="trajectory-entry">
+        </div>
     </div>
 </template>
 
@@ -29,10 +31,18 @@
                 var layout = {
                     title: 'Clients Movement Trajectory',
                     autosize: true,
-                    height: 700,
+                    height: this.height,
+                    legend: {
+                        yref: 'paper',
+                        font: {
+                            family: 'Arial, sans-serif',
+                            size: 10,
+                            color: 'grey',
+                        }
+                    },
                 };
 
-                Plotly.newPlot('trajectory-entry', data, layout);
+                Plotly.newPlot('trajectory-entry', data, layout, {responsive: true});
             }
         },
         computed: {
@@ -45,6 +55,10 @@
             ...mapGetters("data", {
                 clients_locations: "CLIENTS_LOCATIONS",
                 uavs_locations: "UAVS_LOCATIONS"
+            }),
+            ...mapGetters("visual", {
+                width: "GET_WIDTH",
+                height: "GET_HEIGHT"
             }),
 
             get_series: function () {

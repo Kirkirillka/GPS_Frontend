@@ -1,11 +1,23 @@
 <template>
     <div>
-        <DateControl></DateControl>
-        <PollingControl></PollingControl>
-        <WindowSizeControl></WindowSizeControl>
-        <RefreshTimeControl></RefreshTimeControl>
-        <ActionsControl></ActionsControl>
-
+        <b-row no-gutters>
+            <b-col>
+                <DateControl/>
+            </b-col>
+        </b-row>
+        <b-row no-gutters>
+            <b-col>
+                <PollingControl/>
+            </b-col>
+            <b-col>
+                <RefreshTimeControl/>
+            </b-col>
+        </b-row>
+        <b-row no-gutters>
+            <b-col>
+                <WindowSizeControl/>
+            </b-col>
+        </b-row>
     </div>
 </template>
 
@@ -15,7 +27,6 @@
     import PollingControl from "../../Controls/PollingControl";
     import WindowSizeControl from "../../Controls/WindowSizeControl";
     import RefreshTimeControl from "../../Controls/RefreshTimeControl";
-    import ActionsControl from "../../Controls/ActionsControl";
 
     export default {
         name: "ControlSubMenu",
@@ -24,7 +35,6 @@
             PollingControl,
             WindowSizeControl,
             RefreshTimeControl,
-            ActionsControl
         }
     }
 </script>

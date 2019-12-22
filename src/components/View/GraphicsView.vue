@@ -1,9 +1,19 @@
 <template>
-    <div>
-        <MovementTrajectoryFigure></MovementTrajectoryFigure>
-        <SignalQualityChangingFigure></SignalQualityChangingFigure>
-        <SignalQualityGPSFigure></SignalQualityGPSFigure>
-        <UAVPositionEstimationsFigure></UAVPositionEstimationsFigure>
+    <div class="my-1">
+        <b-tabs content-class="mt-3" fill>
+            <b-tab title="Client Trajectory" active>
+                <MovementTrajectoryFigure/>
+            </b-tab>
+            <b-tab title="Signal Changing">
+                <SignalQualityChangingFigure/>
+            </b-tab>
+            <b-tab title="Signal Heatmap">
+                <SignalQualityGPSFigure/>
+            </b-tab>
+            <b-tab title="UAVs Locations">
+                <UAVPositionEstimationsFigure/>
+            </b-tab>
+        </b-tabs>
     </div>
 </template>
 

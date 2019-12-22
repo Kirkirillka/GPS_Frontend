@@ -1,8 +1,15 @@
 <template>
-<div>
-    <MessageCountStatistic/>
-    <RegisteredClientsStatistic/>
-</div>
+    <b-card no-body>
+        <b-tabs card>
+       <b-tab title="DB Statistics" active>
+            <MessageCountStatistic/>
+       </b-tab>
+            <b-tab title="Registered UEs">
+                <RegisteredClientsStatistic/>
+            </b-tab>
+
+        </b-tabs>
+    </b-card>
 
 </template>
 

@@ -1,7 +1,6 @@
 <!--Credits  :http://bl.ocks.org/supereggbert/aff58196188816576af0-->
-
 <template>
-    <div class="p-3">
+    <div>
         <div id="signal-geo-contour">
         </div>
     </div>
@@ -57,7 +56,7 @@
                 var layout = {
                     title: 'Signal Quality in the plane',
                     autosize: true,
-                    height: 700,
+                    height: this.height,
                 };
                 Plotly.newPlot('signal-geo-contour', data, layout, {responsive: true});
             },
@@ -77,6 +76,10 @@
             ...mapGetters("data", {
                 clients_locations: "CLIENTS_LOCATIONS",
                 uavs_locations: "UAVS_LOCATIONS"
+            }),
+            ...mapGetters("visual", {
+                width: "GET_WIDTH",
+                height: "GET_HEIGHT"
             }),
 
             get_ues_locations: function () {

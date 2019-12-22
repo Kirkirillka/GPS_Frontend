@@ -1,24 +1,26 @@
 <template>
     <div class="Home">
-        <b-container>
-            <b-row>
-                <b-col>
-                    <NavigationView/>
-                </b-col>
-            </b-row>
-            <b-row>
-                <b-col>
+        <NavigationView/>
+        <b-container fluid>
+            <b-form-row>
+                <b-col cols="2">
                     <MainMenuView/>
                 </b-col>
-                <b-col>
+                <b-col cols="8">
                     <GraphicsView/>
                 </b-col>
-            </b-row>
-            <b-row>
+                <b-col cols="2">
+                    <EstimationSubMenu/>
+                </b-col>
+            </b-form-row>
+            <b-form-row>
                 <b-col>
                     <StatisticsView/>
                 </b-col>
-            </b-row>
+                <b-col>
+                    <CurrentActionsView/>
+                </b-col>
+            </b-form-row>
         </b-container>
     </div>
 </template>
@@ -28,10 +30,14 @@
     import StatisticsView from "./View/StatisticsView";
     import NavigationView from "./View/NavigationView";
     import GraphicsView from "./View/GraphicsView";
-    import MainMenuView from "./View/MainMenuView";
+    import MainMenuView from "./View/Menus/MainMenuView";
+    import EstimationSubMenu from "./View/Menus/EstimationMenuView";
+    import CurrentActionsView from "./View/CurrentActionsView";
 
     export default {
         components: {
+            CurrentActionsView,
+            EstimationSubMenu,
             StatisticsView,
             NavigationView,
             MainMenuView,
