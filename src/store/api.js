@@ -26,4 +26,29 @@ export default {
 
         return r.data
     },
+    fetch_available_optimization_methods: async () => {
+
+        //TODO: change it when the API method in backend would be done!
+
+
+        return [
+            {
+                name: "clustering",
+                description: "K-Means"
+            },
+            {
+                name: "simplex",
+                description: "K-Means + Optimization"
+            }
+        ]
+
+        // let r = await axios.get(baseDomain + "estimations/methods")
+
+        //return r.data
+    },
+    run_estimation_task: async (body) => {
+        let r = await axios.post(baseDomain + "estimations/new", body)
+
+        return r.data
+    }
 }

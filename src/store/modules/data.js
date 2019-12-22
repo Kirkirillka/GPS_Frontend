@@ -16,13 +16,36 @@ const getters = {
 
 const actions = {
 
-    GET_CLIENT_INFO: async ({commit}, body) => {
+    // eslint-disable-next-line no-unused-vars
+    GET_CLIENT_INFO:  async ({commit, state, getters, rootGetters}, body) => {
+
+      let predefined_body = {
+            limits: rootGetters['control/WINDOW_SIZE'],
+            start_date: rootGetters['control/START_DATETIME_FILTER'],
+            end_date: rootGetters['control/END_DATETIME_FILTER']
+        };
+
+
+        if (body === undefined) {
+            body = predefined_body
+        }
 
         let data = await api.fetch_info_by_client(body)
 
         commit("UPDATE_CLIENTS_LOCATION_DATA", data)
     },
-    GET_LOCATION_ESTIMATIONS: async ({commit}, body) => {
+    // eslint-disable-next-line no-unused-vars
+    GET_LOCATION_ESTIMATIONS: async ({commit, state, getters, rootGetters}, body) => {
+
+        let predefined_body = {
+            limits: rootGetters['control/WINDOW_SIZE'],
+            start_date: rootGetters['control/START_DATETIME_FILTER'],
+            end_date: rootGetters['control/END_DATETIME_FILTER']
+        };
+
+        if (body === undefined) {
+            body = predefined_body
+        }
 
         let data = await api.fetch_estimations(body)
 
