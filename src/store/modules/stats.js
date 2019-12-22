@@ -1,8 +1,8 @@
 import api from "../api";
 
 const state = {
-    registered_clients: [],
-    message_counts: []
+    registered_clients: Array(),
+    message_counts: Array()
 };
 
 const getters = {
@@ -12,6 +12,9 @@ const getters = {
     MESSAGES_STATISTICS: state => {
         return state.message_counts
     },
+    get_registered_clients_num: (state, getters, rootState, rootGetters) => {
+        return rootGetters["data/CLIENTS_LOCATIONS"].length
+    }
 };
 
 const actions = {
