@@ -66,7 +66,7 @@
                 let entries = this.ues_locations.map(r => r).map(function (r) {
                     return {
                         name: r.device.id.slice(0, 6),
-                        mode: 'markers',
+                        mode: 'lines',
                         type: 'scatter',
                         data: r.data
                             .map(function (d) {
