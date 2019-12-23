@@ -8,7 +8,7 @@
 
             <b-button-group vertical>
                 <b-button variant="outline-primary" id="run-estimation-btn" size="sm"
-                          v-on:click="1">Run a new estimation
+                          v-on:click="dispatch_new_estimation_task">Run a new estimation
                 </b-button>
 
             </b-button-group>
@@ -31,32 +31,11 @@
             }),
         },
         methods: {
-            dispatch_ues_locations_updates: function () {
+            dispatch_new_estimation_task: function () {
 
-                let body = {
-                    limits: this.window_size,
-                    start_date: this.start_time_filter,
-                    end_date: this.end_time_filter
-                };
-
-                this.$store.dispatch("data/GET_LOCATION_ESTIMATIONS", body);
+                this.$store.dispatch("estimations/RUN_OPTIMIZATION",);
 
             },
-            dispatch_uavs_locations_updates: function () {
-
-                let body = {
-                    limits: this.window_size,
-                    start_date: this.start_time_filter,
-                    end_date: this.end_time_filter
-                };
-
-                this.$store.dispatch("data/GET_CLIENT_INFO", body);
-
-            },
-            get_stats: function () {
-                this.$store.dispatch("stats/GET_REGISTERED_CLIENTS");
-                this.$store.dispatch("stats/GET_MESSAGES_STATISTICS");
-            }
         }
     }
 </script>

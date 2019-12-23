@@ -1,25 +1,29 @@
 import api from "../api";
 
 const state = {
-    clients_locations: [],
-    uavs_locations: [],
+    ues_locations: [],
+    uavs_location_estimations: [],
+    recent_uavs_estimated_location: {}
 };
 
 const getters = {
-    CLIENTS_LOCATIONS: state => {
-        return state.clients_locations
+    GET_UES_LOCATIONS: state => {
+        return state.ues_locations
     },
-    UAVS_LOCATIONS: state => {
-        return state.uavs_locations
+    GET_UAVS_ESTIMATED_LOCATIONS: state => {
+        return state.uavs_location_estimations
     },
+    GET_UAVS_RECENT_ESTIMATED_LOCATION: state => {
+        return state.recent_uavs_estimated_location
+    }
 };
 
 const actions = {
 
     // eslint-disable-next-line no-unused-vars
-    GET_CLIENT_INFO:  async ({commit, state, getters, rootGetters}, body) => {
+    GET_UES_ALL_LOCATIONS: async ({commit, state, getters, rootGetters}, body) => {
 
-      let predefined_body = {
+        let predefined_body = {
             limits: rootGetters['control/WINDOW_SIZE'],
             start_date: rootGetters['control/START_DATETIME_FILTER'],
             end_date: rootGetters['control/END_DATETIME_FILTER']
@@ -35,7 +39,7 @@ const actions = {
         commit("UPDATE_CLIENTS_LOCATION_DATA", data)
     },
     // eslint-disable-next-line no-unused-vars
-    GET_LOCATION_ESTIMATIONS: async ({commit, state, getters, rootGetters}, body) => {
+    GET_UAVS_ALL_ESTIMATED_LOCATIONS: async ({commit, state, getters, rootGetters}, body) => {
 
         let predefined_body = {
             limits: rootGetters['control/WINDOW_SIZE'],
@@ -47,7 +51,13 @@ const actions = {
             body = predefined_body
         }
 
-        let data = await api.fetch_estimations(body)
+        let data = await api.fetch_all_estimations(body)
+
+        commit("UPDATE_UAVS_ESTIMATION_LOCATION_DATA", data)
+    },
+    GET_UAVS_RECENT_ESTIMATED_LOCATION: async ({commit},) => {
+
+        let data = await api.fetch_recent_estimation()
 
         commit("UPDATE_UAVS_ESTIMATION_LOCATION_DATA", data)
     }
@@ -56,10 +66,10 @@ const actions = {
 
 const mutations = {
     UPDATE_CLIENTS_LOCATION_DATA: (state, payload) => {
-        state.clients_locations = payload
+        state.ues_locations = payload
     },
     UPDATE_UAVS_ESTIMATION_LOCATION_DATA: (state, payload) => {
-        state.uavs_locations = payload
+        state.uavs_location_estimations = payload
     }
 };
 

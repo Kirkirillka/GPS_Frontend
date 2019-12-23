@@ -4,7 +4,7 @@ const state = {
     refresh_timeout: 5,
     window_size: 20,
     polling: false,
-    start_datetime_filter: moment().add(-1, 'days').toDate(),
+    start_datetime_filter: moment().toDate(),
     end_datetime_filter: moment().add(1, 'days').toDate(),
 
 };

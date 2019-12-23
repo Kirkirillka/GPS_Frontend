@@ -44,7 +44,7 @@
                     end_date: this.end_time_filter
                 };
 
-                this.$store.dispatch("data/GET_CLIENT_INFO", body);
+                this.$store.dispatch("data/GET_UES_ALL_LOCATIONS", body);
 
             },
             dispatch_uavs_locations_updates: function () {
@@ -55,7 +55,7 @@
                     end_date: this.end_time_filter
                 };
 
-                this.$store.dispatch("data/GET_LOCATION_ESTIMATIONS", body);
+                this.$store.dispatch("data/GET_UAVS_ALL_ESTIMATED_LOCATIONS", body);
 
             },
             get_stats: function () {

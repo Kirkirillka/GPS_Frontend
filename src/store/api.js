@@ -9,8 +9,13 @@ export default {
 
         return r.data
     },
-    fetch_estimations: async (body) => {
+    fetch_all_estimations: async (body) => {
         let r = await axios.post(baseDomain + "estimations/all", body)
+
+        return r.data
+    },
+    fetch_recent_estimation: async () => {
+        let r = await axios.post(baseDomain + "estimations/recent",)
 
         return r.data
     },
@@ -20,9 +25,9 @@ export default {
 
         return r.data
     },
-    fetch_messages_statistics: async (body) => {
+    fetch_db_messages_stats: async (body) => {
 
-        let r = await axios.get(baseDomain + "stats", body)
+        let r = await axios.get(baseDomain + "db/stats", body)
 
         return r.data
     },

@@ -74,8 +74,8 @@
                 refresh_timeout: "REFRESH_TIMEOUT"
             }),
             ...mapGetters("data", {
-                clients_locations: "CLIENTS_LOCATIONS",
-                uavs_locations: "UAVS_LOCATIONS"
+                ues_locations: "GET_UES_LOCATIONS",
+                uavs_location_estimations: "GET_UAVS_ESTIMATED_LOCATIONS"
             }),
             ...mapGetters("visual", {
                 width: "GET_WIDTH",
@@ -83,7 +83,7 @@
             }),
 
             get_ues_locations: function () {
-                return this.clients_locations.flatMap(function (r) {
+                return this.ues_locations.flatMap(function (r) {
                     return r.data.flatMap(function (d) {
                         return {
                             'x': parseFloat(d.latitude),

@@ -53,8 +53,8 @@
                 refresh_timeout: "REFRESH_TIMEOUT"
             }),
             ...mapGetters("data", {
-                clients_locations: "CLIENTS_LOCATIONS",
-                uavs_locations: "UAVS_LOCATIONS"
+                ues_locations: "GET_UES_LOCATIONS",
+                uavs_location_estimations: "GET_UAVS_ESTIMATED_LOCATIONS"
             }),
             ...mapGetters("visual", {
                 width: "GET_WIDTH",
@@ -63,7 +63,7 @@
 
             get_series: function () {
 
-                let entries = this.clients_locations.map(r => r).map(function (r) {
+                let entries = this.ues_locations.map(r => r).map(function (r) {
                     return {
                         name: r.device.id.slice(0, 6),
                         mode: 'markers',

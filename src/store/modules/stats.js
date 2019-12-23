@@ -13,7 +13,7 @@ const getters = {
         return state.message_counts
     },
     get_registered_clients_num: (state, getters, rootState, rootGetters) => {
-        return rootGetters["data/CLIENTS_LOCATIONS"].length
+        return rootGetters["data/GET_UES_LOCATIONS"].length
     }
 };
 
@@ -26,7 +26,7 @@ const actions = {
     },
     GET_MESSAGES_STATISTICS: async ({commit}, body) => {
 
-        let data = await api.fetch_messages_statistics(body)
+        let data = await api.fetch_db_messages_stats(body)
 
         commit("UPDATE_MESSAGES_STATISTICS", data)
     }

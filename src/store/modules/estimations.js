@@ -32,7 +32,20 @@ const actions = {
 
         commit("UPDATE_OPTIMIZATION_METHODS_LIST", data)
     },
-    RUN_OPTIMIZATION: async ({commit}, body) => {
+    // eslint-disable-next-line no-unused-vars
+    RUN_OPTIMIZATION: async ({commit, state, getters, rootGetters}, body) => {
+
+        let predefined_body = {
+            start_date: rootGetters['control/START_DATETIME_FILTER'],
+            end_date: rootGetters['control/END_DATETIME_FILTER'],
+            num_clusters: getters.GET_CURRENT_CLUSTERS_NUM,
+            method: getters.GET_CURRENT_OPTIMIZATION_METHOD
+        };
+
+        if (body === undefined) {
+            body = predefined_body
+        }
+
         let res = await api.run_estimation_task(body)
 
         commit("ADD_ESTIMATION_TASKS", res)
@@ -50,7 +63,7 @@ const mutations = {
         state.optimization_methods = payload
     },
     ADD_ESTIMATION_TASKS: (state, payload) => {
-        state.running_tasks.append(payload)
+        state.running_tasks.push(payload)
     }
 };
 

@@ -70,6 +70,9 @@
         watch: {
             get_ues_locations: function () {
                 this.draw()
+            },
+            get_uavs_locations: function () {
+                this.draw()
             }
         },
         computed: {
@@ -80,15 +83,15 @@
                 refresh_timeout: "REFRESH_TIMEOUT"
             }),
             ...mapGetters("data", {
-                clients_locations: "CLIENTS_LOCATIONS",
-                uavs_locations: "UAVS_LOCATIONS"
+                ues_locations: "GET_UES_LOCATIONS",
+                uavs_location_estimations: "GET_UAVS_ESTIMATED_LOCATIONS"
             }),
             ...mapGetters("visual", {
                 width: "GET_WIDTH",
                 height: "GET_HEIGHT"
             }),
             get_ues_locations: function () {
-                return this.clients_locations.flatMap(function (r) {
+                return this.ues_locations.flatMap(function (r) {
                     let data_by_client = r.data.map(function (d) {
                             return {
                                 'x': parseFloat(d.latitude),
@@ -105,15 +108,16 @@
                 })
             },
             get_uavs_locations: function () {
-                let entries = this.uavs_locations
-                    .filter(r => r.payload.target == 'uav')
+                let entries = this.uavs_location_estimations
+                    .filter(r => r.payload.target == 'uav').slice(0, 1)
                     .flatMap(r => r.payload.suggested.map(function (r) {
                             return {
                                 'x': parseFloat(r.latitude),
                                 'y': parseFloat(r.longitude),
                             }
-                        }
-                    )).slice(0, 1)
+                        })
+                    )
+
 
                 return entries
 

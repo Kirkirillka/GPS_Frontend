@@ -34,8 +34,8 @@
                 this.$store.commit("control/TOGGLE_PULLING", data);
             },
             poll_operation: function () {
-                this.$store.dispatch("data/GET_CLIENT_INFO")
-                this.$store.dispatch("data/GET_LOCATION_ESTIMATIONS")
+                this.$store.dispatch("data/GET_UES_ALL_LOCATIONS")
+                this.$store.dispatch("data/GET_UAVS_ALL_ESTIMATED_LOCATIONS")
                 this.$store.dispatch("stats/GET_REGISTERED_CLIENTS")
                 this.$store.dispatch("stats/GET_MESSAGES_STATISTICS")
 
