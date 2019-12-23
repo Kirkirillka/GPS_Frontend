@@ -26,23 +26,8 @@
 
         methods: {
             draw: function () {
-                var trace1 = {
-                    x: this.get_ues_locations.map(d => d.x),
-                    y: this.get_ues_locations.map(d => d.y),
-                    mode: 'markers+text',
-                    type: 'scatter',
-                    name: 'UE',
-                    text: this.get_ues_locations.map(d => d.id.slice(0, 6)),
-                    textposition: 'top',
 
-                    marker: {
-                        size: 12,
-                        color: this.ues_color
-
-                    }
-                };
-
-                var trace2 = {
+                var uavs_data = [{
                     x: this.get_uavs_locations.map(d => d.x),
                     y: this.get_uavs_locations.map(d => d.y),
                     mode: 'markers',
@@ -52,10 +37,10 @@
                         size: 20,
                         color: this.estimation_color
                     }
-                };
+                }];
 
 
-                var data = [trace1, trace2];
+                var data = uavs_data.concat(this.get_series);
 
                 var layout = {
                     title: 'UEs last positions and estimated locations for UAVs',
@@ -90,6 +75,36 @@
                 width: "GET_WIDTH",
                 height: "GET_HEIGHT"
             }),
+            get_series: function () {
+
+                let entries = this.ues_locations.map(r => r).map(function (r) {
+                    return {
+                        name: r.device.id.slice(0, 6),
+                        mode: 'markers',
+                        type: 'scatter',
+                        data: r.data
+                            .map(function (d) {
+                                return {
+                                    'x': parseFloat(d.latitude),
+                                    'y': parseFloat(d.longitude),
+                                }
+                            })
+                    }
+                })
+
+                return entries.map(function (d) {
+                    let x = d.data.map(d => d.x)
+                    let y = d.data.map(d => d.y)
+
+                    d.x = x
+                    d.y = y
+
+                    delete d.data
+
+                    return d
+
+                })
+            },
             get_ues_locations: function () {
                 return this.ues_locations.flatMap(function (r) {
                     let data_by_client = r.data.map(function (d) {
