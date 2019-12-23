@@ -1,5 +1,5 @@
 <template>
-    <div class="p-3">
+    <div>
         <apexchart :options="options" :series="get_series"></apexchart>
     </div>
 </template>
@@ -8,11 +8,11 @@
 
     import moment from "moment";
     //import * as d3 from "d3v4";
+    import {mapGetters} from 'vuex';
 
 
     export default {
         name: "SignalQualityDynamics",
-        props: ["series", "window_size", "selected_dates"],
         data: function () {
             return {
                 options: {
@@ -24,7 +24,8 @@
                     chart: {
                         type: "line",
                         stacked: true,
-                        height: 700,
+                        height: this.height,
+                        width: "100%",
                         zoom: {
                             enabled: false
                         },
@@ -71,7 +72,7 @@
                         labels: {
 
                             formatter: function (val, timestamp) {
-                                return moment(new Date(timestamp)).format("DD MMM hh:mm:ss")
+                                return moment(timestamp).format("DD MMM hh:mm:ss")
                             }
                         }
                     },
@@ -87,33 +88,34 @@
             }
         },
         computed: {
-            get_window_size: function(){
-                return this.windows_size
-            },
+
+            ...mapGetters("control", {
+                start: "START_DATETIME_FILTER",
+                end: "END_DATETIME_FILTER",
+                window_size: "WINDOW_SIZE",
+                refresh_timeout: "REFRESH_TIMEOUT"
+            }),
+            ...mapGetters("data", {
+                ues_locations: "GET_UES_LOCATIONS",
+                uavs_location_estimations: "GET_UAVS_ESTIMATED_LOCATIONS"
+            }),
+            ...mapGetters("visual", {
+                width: "GET_WIDTH",
+                height: "GET_HEIGHT"
+            }),
+
             get_series: function () {
-                let scope = this
-
-
-                return this.series.map(function (r) {
-
-
+                return this.ues_locations.map(function (r) {
                     return {
-                        "name": r.device.id,
-                        "data": r.data
-                            .filter(function (d) {
-                                var target_date = new Date(d.time);
-                                var left = scope.selected_dates.start
-                                var right = scope.selected_dates.end
-
-                                return left <= target_date && target_date <= right
-                            }).map(
-                                function (r) {
-                                    return {
-                                        "x": r.time,
-                                        "y": -parseFloat(r.signal)
-                                    }
+                        "name": r.device.id.slice(0, 6),
+                        "data": r.data.map(
+                            function (r) {
+                                return {
+                                    "x": r.time.value,
+                                    "y": -parseFloat(r.signal)
                                 }
-                            )
+                            }
+                        )
                     }
                 })
 

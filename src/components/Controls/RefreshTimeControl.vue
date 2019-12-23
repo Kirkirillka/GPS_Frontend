@@ -1,37 +1,48 @@
 <template>
-    <div class="p-3">
-    <b-form-group
-            label="Refresh Timeout"
-            v-bind:description="'Chosed time in seconds: ' + refresh_timeout"
-            label-cols-lg="5">
-        <b-form-input type="number"
-                      size="sm"
-                      v-model="refresh_timeout"
-                      :max="max_refresh"
-                      :min="min_refresh"
-                      :formatter="SecondsFormat"
-                      v-on:input="updateValue"
-        ></b-form-input>
-    </b-form-group>
+    <div>
+        <b-form-group
+                label="Refresh Timeout"
+                v-bind:description="'Chosen time in seconds: ' + refresh_timeout"
+                label-size="sm">
+
+            <b-button-group>
+                <b-button v-on:click="decrease" variant="danger">-</b-button>
+                <b-button v-on:click="increase" variant="success">+</b-button>
+            </b-button-group>
+        </b-form-group>
     </div>
 </template>
 
 <script>
+
+    import {mapGetters} from 'vuex';
+
     export default {
         name: "RefreshTimeControl",
-        data: function(){
+        data: function () {
             return {
-                refresh_timeout: this.value,
                 min_refresh: 5,
-                max_refresh: 100
+                max_refresh: 100,
             }
         },
-        props: ['value'],
+        computed: {
+            ...mapGetters("control", {
+                refresh_timeout: "REFRESH_TIMEOUT",
+            }),
+        },
         methods: {
-            updateValue: function () {
-                this.$emit('input', this.refresh_timeout);
+            increase: function () {
+                this.updateValue(this.refresh_timeout + 1)
             },
-                        SecondsFormat(value) {
+            decrease: function () {
+                this.updateValue(this.refresh_timeout - 1)
+            },
+            updateValue: function (data) {
+                if (this.min_refresh <= data && data <= this.max_refresh) {
+                    this.$store.commit("control/UPDATE_REFRESH_TIMEOUT", data)
+                }
+            },
+            SecondsFormat(value) {
                 return parseInt(value)
             },
         }

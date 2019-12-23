@@ -1,24 +1,21 @@
 <template>
-    <div class="p-3">
+    <div>
         <b-form-group
-                label-cols-sm="4"
-                label-cols-lg="5"
-                description="Set the first datetime of data."
-                label="Starting from:"
+
+
+                description="Beginning datetime of the dataset"
                 label-for="start-time"
         >
-            <date-picker id="start-time" v-model="start" v-on:input="updateValue"></date-picker>
+            <date-picker size="sm" id="start-time" v-bind:value="start" v-on:input="update_start_date"></date-picker>
 
         </b-form-group>
 
         <b-form-group
-                label-cols-sm="4"
-                label-cols-lg="5"
                 description="Set the last datetime of data."
-                label="Ending at:"
                 label-for="end-time"
+                label-size="sm"
         >
-            <date-picker id="end-time" v-model="end" v-on:input="updateValue"></date-picker>
+            <date-picker id="end-time" v-bind:value="end" v-on:input="update_end_date"></date-picker>
         </b-form-group>
     </div>
 </template>
@@ -26,6 +23,7 @@
 <script>
 
     import jQuery from 'jquery'
+    import {mapGetters} from 'vuex';
 
     // Using font-awesome 5 icons
     import '@fortawesome/fontawesome-free/css/fontawesome.css';
@@ -55,21 +53,23 @@
             datePicker
         },
         data() {
-            return {
-                start: this.value.start,
-                end: this.value.end
-            };
+            return {}
+
         },
-        props: ['value'],
+        computed: {
+            ...mapGetters("control", {
+                start: "START_DATETIME_FILTER",
+                end: "END_DATETIME_FILTER",
+            }),
+
+        },
         methods: {
-            updateValue: function () {
+            update_start_date: function (data) {
+                this.$store.commit("control/UPDATE_START_DATETIME_FILTER", data)
+            },
+            update_end_date: function (data) {
 
-                var message = {
-                    start: new Date(this.start),
-                    end: new Date(this.end)
-                }
-
-                this.$emit('input', message);
+                this.$store.commit("control/UPDATE_END_DATETIME_FILTER", data)
             }
         },
     }

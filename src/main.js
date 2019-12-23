@@ -8,9 +8,11 @@ import BootstrapVue from 'bootstrap-vue'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 
+import store from './store'
+// use router
+import router from './router'
 
-
-//axios
+// axios
 Vue.use(VueAxios, axios)
 
 // apexchart
@@ -22,6 +24,9 @@ Vue.use(BootstrapVue)
 Vue.config.productionTip = true
 
 new Vue({
+    el: "#app",
+    store,
+    router,
     render: h => h(App),
 }).$mount('#app')
 

@@ -1,36 +1,46 @@
 <template>
-    <div class="p-3">
+    <div>
         <b-form-group
                 label="Window Size"
-                v-bind:description="'Chosed size: ' + window_size"
-                label-cols-lg="5">
+                v-bind:description="'Chosen size: ' + window_size"
+                label-size="sm">
+
             <b-form-input type="range"
                           size="sm"
-                          v-model="window_size"
+                          v-bind:input="window_size"
                           :min="window_min"
                           :max="window_max"
                           :formatter="IntegerFormat"
-                          v-on:input="updateValue"
+                          v-on:change="updateValue"
             ></b-form-input>
         </b-form-group>
     </div>
 </template>
 
 <script>
+
+    import {mapGetters} from 'vuex';
+
     export default {
         name: "WindowSizeControl",
         data: function () {
             return {
-                window_size: this.value,
                 window_min: 5,
                 window_max: 100,
             }
         },
-        props: ['value'],
+        computed: {
+            ...mapGetters("control", {
+                window_size: "WINDOW_SIZE",
+            }),
+        },
         methods: {
-            updateValue: function () {
-                this.$emit('input', this.window_size);
+            updateValue: function (data) {
+                this.$store.commit("control/UPDATE_WINDOW_SIZE", data)
             },
+            /**
+             * @return {number}
+             */
             IntegerFormat(value) {
                 return parseInt(value)
             },

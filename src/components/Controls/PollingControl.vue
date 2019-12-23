@@ -1,28 +1,53 @@
 <template>
-    <div class="p-3">
+    <div>
         <b-form-group
-                description="Set to start continuous pooling data"
+                description="Automatic updates"
                 label="Polling Switcher"
-                label-cols-lg="5">
-            <b-checkbox switch v-model="is_polling" v-on:input="updateValue">
-            </b-checkbox>
+                label-size="sm">
+            <div>
+                <b-checkbox size="sm" switch v-bind:oninput="is_polling" v-on:change="updateValue">
+                </b-checkbox>
+            </div>
         </b-form-group>
     </div>
 </template>
 
 <script>
+
+    import {mapGetters} from 'vuex';
+
     export default {
         name: "PollingControl",
-        data: function () {
-            return {
-                is_polling: this.value
+        computed: {
+            ...mapGetters("control", {
+                is_polling: "POLLING",
+                refresh: "REFRESH_TIMEOUT"
+            }),
+        },
+        watch: {
+            is_polling: function () {
+                this.toggle_polling()
             }
         },
-        props: ['value'],
         methods: {
-            updateValue: function () {
-                this.$emit('input', this.is_polling);
+            updateValue: function (data) {
+                this.$store.commit("control/TOGGLE_PULLING", data);
             },
+            poll_operation: function () {
+                this.$store.dispatch("data/GET_UES_ALL_LOCATIONS")
+                this.$store.dispatch("data/GET_UAVS_ALL_ESTIMATED_LOCATIONS")
+                this.$store.dispatch("stats/GET_REGISTERED_CLIENTS")
+                this.$store.dispatch("stats/GET_MESSAGES_STATISTICS")
+
+            },
+            toggle_polling: function () {
+                if (this.is_polling === true) {
+                    this.poll_operation()
+                    this.timer = setInterval(this.poll_operation, this.refresh * 1000)
+                } else {
+                    clearInterval(this.timer)
+                }
+            }
 
         },
 
