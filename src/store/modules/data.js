@@ -3,7 +3,8 @@ import api from "../api";
 const state = {
     ues_locations: [],
     uavs_location_estimations: [],
-    recent_uavs_estimated_location: {}
+    recent_uavs_estimated_location: {},
+    current_estimation: {}
 };
 
 const getters = {
@@ -15,8 +16,36 @@ const getters = {
     },
     GET_UAVS_RECENT_ESTIMATED_LOCATION: state => {
         return state.recent_uavs_estimated_location
+    },
+    GET_UES_TRAJECTORIES: state => {
+        return state.ues_locations.map(function (r) {
+            return {
+                client_id: r.device.id,
+                movement: r.data.map(function (d) {
+                    return {
+                        'x': parseFloat(d.latitude),
+                        'y': parseFloat(d.longitude),
+                    }
+                })
+            }
+        })
+    },
+    GET_SIGNAL_BY_COORDINATES: state => {
+        return state.ues_locations.flatMap(function (r) {
+            return r.data.flatMap(function (d) {
+                return {
+                    'x': parseFloat(d.latitude),
+                    'y': parseFloat(d.longitude),
+                    'z': d.signal
+                }
+            })
+        })
+    },
+    GET_CURRENT_ESTIMATION: state => {
+        return state.current_estimation
     }
-};
+}
+;
 
 const actions = {
 
@@ -60,6 +89,10 @@ const actions = {
         let data = await api.fetch_recent_estimation()
 
         commit("UPDATE_UAVS_ESTIMATION_LOCATION_DATA", data)
+    },
+    SET_CURRENT_ESTIMATION: async ({commit},estimation) => {
+
+        commit("UPDATE_CURRENT_ESTIMATION", estimation)
     }
 
 };
@@ -70,6 +103,9 @@ const mutations = {
     },
     UPDATE_UAVS_ESTIMATION_LOCATION_DATA: (state, payload) => {
         state.uavs_location_estimations = payload
+    },
+    UPDATE_CURRENT_ESTIMATION: (state,payload) => {
+        state.current_estimation = payload
     }
 };
 

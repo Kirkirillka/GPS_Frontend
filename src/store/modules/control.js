@@ -6,6 +6,7 @@ const state = {
     polling: false,
     start_datetime_filter: moment().toDate(),
     end_datetime_filter: moment().add(1, 'days').toDate(),
+    polling_timer: -1
 
 };
 
@@ -26,6 +27,9 @@ const getters = {
     REFRESH_TIMEOUT: state => {
         return state.refresh_timeout
     },
+    GET_POLLING_TIMER: state => {
+        return state.polling_timer
+    }
 };
 
 const actions = {
@@ -46,6 +50,13 @@ const mutations = {
     },
     UPDATE_REFRESH_TIMEOUT: (state, payload) => {
         state.refresh_timeout = payload;
+    },
+    UPDATE_POLLING_TIMER: (state, payload) => {
+        state.polling_timer = payload
+    },
+    STOP_POLLING_TIMER: (state) => {
+        clearInterval(state.polling_timer)
+        state.polling_timer = -1
     }
 };
 

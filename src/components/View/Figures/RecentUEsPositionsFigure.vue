@@ -13,7 +13,7 @@
     import {mapGetters} from 'vuex';
 
     export default {
-        name: "UAVPositionEstimation",
+        name: "RecentUEsPositionsFigure",
         data: function () {
             return {
                 estimation_color: 'black',
@@ -42,23 +42,11 @@
                     }
                 };
 
-                var trace2 = {
-                    x: this.get_uavs_locations.map(d => d.x),
-                    y: this.get_uavs_locations.map(d => d.y),
-                    mode: 'markers',
-                    type: 'scatter',
-                    name: 'UAV',
-                    marker: {
-                        size: 20,
-                        color: this.estimation_color
-                    }
-                };
 
-
-                var data = [trace1, trace2];
+                var data = [trace1,];
 
                 var layout = {
-                    title: 'UEs last positions and estimated locations for UAVs',
+                    title: 'Recent received GPS Positions for UEs',
                     autosize: true,
                     height: this.height,
                 };
@@ -76,10 +64,15 @@
             }
         },
         computed: {
+            ...mapGetters("control", {
+                start: "START_DATETIME_FILTER",
+                end: "END_DATETIME_FILTER",
+                window_size: "WINDOW_SIZE",
+                refresh_timeout: "REFRESH_TIMEOUT"
+            }),
             ...mapGetters("data", {
                 ues_locations: "GET_UES_LOCATIONS",
-                uavs_location_estimations: "GET_UAVS_ESTIMATED_LOCATIONS",
-                current_estimation: "GET_CURRENT_ESTIMATION"
+                uavs_location_estimations: "GET_UAVS_ESTIMATED_LOCATIONS"
             }),
             ...mapGetters("visual", {
                 width: "GET_WIDTH",
@@ -102,18 +95,6 @@
                     return data_by_client
                 })
             },
-            get_uavs_locations: function () {
-                if (this.current_estimation === undefined) {
-                    return {}
-                } else {
-                    return this.current_estimation.payload.suggested.map(function (r) {
-                        return {
-                            'x': parseFloat(r.latitude),
-                            'y': parseFloat(r.longitude),
-                        }
-                    })
-                }
-            }
         }
     }
 </script>

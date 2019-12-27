@@ -1,20 +1,17 @@
 <template>
     <div>
         <b-form-group
-
-
                 description="Beginning datetime of the dataset"
                 label-for="start-time"
-        >
+                label-size="sm">
             <date-picker size="sm" id="start-time" v-bind:value="start" v-on:input="update_start_date"></date-picker>
 
         </b-form-group>
 
         <b-form-group
-                description="Set the last datetime of data."
+                description="Ending datetime of the dataset"
                 label-for="end-time"
-                label-size="sm"
-        >
+                label-size="sm">
             <date-picker id="end-time" v-bind:value="end" v-on:input="update_end_date"></date-picker>
         </b-form-group>
     </div>

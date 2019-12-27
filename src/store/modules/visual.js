@@ -1,7 +1,7 @@
 
 const state = {
-    figures_width: 800,
-    figures_height: 800
+    figures_width: 600,
+    figures_height: 600
 };
 
 const getters = {

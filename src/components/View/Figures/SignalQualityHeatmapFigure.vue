@@ -13,16 +13,16 @@
     import {mapGetters} from 'vuex';
 
     export default {
-        name: "SignalQualityGeoPosition",
+        name: "SignalQualityHeatmapFigure",
         mounted: function () {
             this.draw()
         },
 
         methods: {
             draw: function () {
-                let x = this.get_ues_locations.map(d => d.x)
-                let y = this.get_ues_locations.map(d => d.y)
-                let z = this.get_ues_locations.map(d => d.z)
+                let x = this.get_signal_data.map(d => d.x)
+                let y = this.get_signal_data.map(d => d.y)
+                let z = this.get_signal_data.map(d => d.z)
 
 
                 var data = [{
@@ -53,7 +53,7 @@
                     }
                 }];
 
-                var layout = {
+                let layout = {
                     title: 'Signal Quality in the plane',
                     autosize: true,
                     height: this.height,
@@ -62,38 +62,18 @@
             },
         },
         watch: {
-            get_ues_locations: function () {
+            get_signal_data: function () {
                 this.draw()
             }
         },
         computed: {
-            ...mapGetters("control", {
-                start: "START_DATETIME_FILTER",
-                end: "END_DATETIME_FILTER",
-                window_size: "WINDOW_SIZE",
-                refresh_timeout: "REFRESH_TIMEOUT"
-            }),
             ...mapGetters("data", {
-                ues_locations: "GET_UES_LOCATIONS",
-                uavs_location_estimations: "GET_UAVS_ESTIMATED_LOCATIONS"
+                get_signal_data: "GET_SIGNAL_BY_COORDINATES",
             }),
             ...mapGetters("visual", {
                 width: "GET_WIDTH",
                 height: "GET_HEIGHT"
             }),
-
-            get_ues_locations: function () {
-                return this.ues_locations.flatMap(function (r) {
-                    return r.data.flatMap(function (d) {
-                        return {
-                            'x': parseFloat(d.latitude),
-                            'y': parseFloat(d.longitude),
-                            'z': d.signal
-                        }
-                    })
-                })
-
-            }
         }
     }
 </script>

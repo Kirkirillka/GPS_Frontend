@@ -46,15 +46,8 @@
             }
         },
         computed: {
-            ...mapGetters("control", {
-                start: "START_DATETIME_FILTER",
-                end: "END_DATETIME_FILTER",
-                window_size: "WINDOW_SIZE",
-                refresh_timeout: "REFRESH_TIMEOUT"
-            }),
             ...mapGetters("data", {
-                ues_locations: "GET_UES_LOCATIONS",
-                uavs_location_estimations: "GET_UAVS_ESTIMATED_LOCATIONS"
+                ues_trajectory: "GET_UES_TRAJECTORIES",
             }),
             ...mapGetters("visual", {
                 width: "GET_WIDTH",
@@ -62,34 +55,16 @@
             }),
 
             get_series: function () {
-
-                let entries = this.ues_locations.map(r => r).map(function (r) {
+                return this.ues_trajectory.map( function (d) {
                     return {
-                        name: r.device.id.slice(0, 6),
+                        name: name,
                         mode: 'lines',
                         type: 'scatter',
-                        data: r.data
-                            .map(function (d) {
-                                return {
-                                    'x': parseFloat(d.latitude),
-                                    'y': parseFloat(d.longitude),
-                                }
-                            })
+                        x: d.movement.map(s => s.x),
+                        y: d.movement.map(s => s.y)
                     }
                 })
 
-                return entries.map(function (d) {
-                    let x = d.data.map(d => d.x)
-                    let y = d.data.map(d => d.y)
-
-                    d.x = x
-                    d.y = y
-
-                    delete d.data
-
-                    return d
-
-                })
             },
         }
     }

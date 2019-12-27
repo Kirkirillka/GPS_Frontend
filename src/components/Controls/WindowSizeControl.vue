@@ -11,7 +11,7 @@
                           :min="window_min"
                           :max="window_max"
                           :formatter="IntegerFormat"
-                          v-on:change="updateValue"
+                          v-on:change="update_window_size"
             ></b-form-input>
         </b-form-group>
     </div>
@@ -35,13 +35,13 @@
             }),
         },
         methods: {
-            updateValue: function (data) {
+            update_window_size: function (data) {
                 this.$store.commit("control/UPDATE_WINDOW_SIZE", data)
             },
             /**
              * @return {number}
              */
-            IntegerFormat(value) {
+            IntegerFormat: function (value) {
                 return parseInt(value)
             },
         },

@@ -42,7 +42,7 @@
                     this.$store.commit("control/UPDATE_REFRESH_TIMEOUT", data)
                 }
             },
-            SecondsFormat(value) {
+            IntegerFormat(value) {
                 return parseInt(value)
             },
         }
