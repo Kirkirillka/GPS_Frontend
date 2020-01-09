@@ -4,7 +4,7 @@ const state = {
     refresh_timeout: 5,
     window_size: 20,
     polling: false,
-    start_datetime_filter: moment().toDate(),
+    start_datetime_filter: moment().subtract(1,"hour").toDate(),
     end_datetime_filter: moment().add(1, 'days').toDate(),
     polling_timer: -1
 
