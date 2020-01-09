@@ -10,7 +10,7 @@
         methods: {
 
             get_stats: function () {
-                this.$store.dispatch("stats/GET_MESSAGES_STATISTICS");
+                this.$store.dispatch("stats/GET_REGISTERED_CLIENTS");
             }
         }
     }
