@@ -7,7 +7,7 @@
 
             <b-form-input type="range"
                           size="sm"
-                          v-bind:input="window_size"
+                          v-bind:value="window_size"
                           :min="window_min"
                           :max="window_max"
                           :formatter="IntegerFormat"
