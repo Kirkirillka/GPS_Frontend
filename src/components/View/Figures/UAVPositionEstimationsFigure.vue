@@ -32,7 +32,6 @@
                     mode: 'markers+text',
                     type: 'scatter',
                     name: 'UE',
-                    text: this.get_ues_locations.map(d => d.id.slice(0, 6)),
                     textposition: 'top',
 
                     marker: {
@@ -86,27 +85,25 @@
                 height: "GET_HEIGHT"
             }),
             get_ues_locations: function () {
-                return this.ues_locations.flatMap(function (r) {
-                    let data_by_client = r.data.map(function (d) {
-                            return {
-                                'x': parseFloat(d.latitude),
-                                'y': parseFloat(d.longitude),
-                            }
+                let cur_estimation = this.current_estimation
+
+                if (cur_estimation.payload === undefined) {
+                    return []
+                } else {
+                    return cur_estimation.payload.ues_location.map(function (d) {
+                        return {
+                            x: d[0],
+                            y: d[1]
                         }
-                    ).map(function (f) {
-                        f.id = r.device.id
-
-                        return f
-                    }).slice(0, 1)
-
-                    return data_by_client
-                })
+                    })
+                }
             },
             get_uavs_locations: function () {
-                if (this.current_estimation === undefined) {
-                    return {}
+                let cur_estimation = this.current_estimation
+                if (cur_estimation.payload === undefined) {
+                    return []
                 } else {
-                    return this.current_estimation.payload.suggested.map(function (r) {
+                    return cur_estimation.payload.suggested.map(function (r) {
                         return {
                             'x': parseFloat(r.latitude),
                             'y': parseFloat(r.longitude),
