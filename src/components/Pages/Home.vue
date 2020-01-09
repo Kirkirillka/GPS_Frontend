@@ -1,6 +1,6 @@
 <template>
     <div class="Home">
-        <b-container>
+        <b-container fluid>
             <router-view name="header"></router-view>
             <router-view></router-view>
             <router-view name="footer"></router-view>
