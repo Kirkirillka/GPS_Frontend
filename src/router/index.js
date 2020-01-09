@@ -19,6 +19,7 @@ const routes = [
         {
             path: '/',
             name: 'home',
+            redirect: { name: "visualization"},
             components: {
                 header: NavigationView,
                 default: Home,
@@ -27,6 +28,7 @@ const routes = [
                 {
                     path: 'visualize',
                     name: 'visualization',
+                    redirect: { name: "signal_view"},
                     components: {
                         default: Visualization,
                         footer: StatisticsView,
@@ -70,6 +72,7 @@ const routes = [
                 {
                     path: 'estimate',
                     name: 'estimation',
+                    redirect: { name: "ues_last_position"},
                     components: {
                         default: Estimation,
                         footer: EstimationListView,
