@@ -71,30 +71,12 @@
                 refresh_timeout: "REFRESH_TIMEOUT"
             }),
             ...mapGetters("data", {
-                ues_locations: "GET_UES_LOCATIONS",
-                uavs_location_estimations: "GET_UAVS_ESTIMATED_LOCATIONS"
+                get_ues_locations: "GET_UES_RECENT_LOCATION"
             }),
             ...mapGetters("visual", {
                 width: "GET_WIDTH",
                 height: "GET_HEIGHT"
             }),
-            get_ues_locations: function () {
-                return this.ues_locations.flatMap(function (r) {
-                    let data_by_client = r.data.map(function (d) {
-                            return {
-                                'x': parseFloat(d.latitude),
-                                'y': parseFloat(d.longitude),
-                            }
-                        }
-                    ).map(function (f) {
-                        f.id = r.device.id
-
-                        return f
-                    }).slice(0, 1)
-
-                    return data_by_client
-                })
-            },
         }
     }
 </script>

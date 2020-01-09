@@ -8,43 +8,60 @@ const state = {
 };
 
 const getters = {
-    GET_UES_LOCATIONS: state => {
-        return state.ues_locations
-    },
-    GET_UAVS_ESTIMATED_LOCATIONS: state => {
-        return state.uavs_location_estimations
-    },
-    GET_UAVS_RECENT_ESTIMATED_LOCATION: state => {
-        return state.recent_uavs_estimated_location
-    },
-    GET_UES_TRAJECTORIES: state => {
-        return state.ues_locations.map(function (r) {
-            return {
-                client_id: r.device.id,
-                movement: r.data.map(function (d) {
+        GET_UES_LOCATIONS: state => {
+            return state.ues_locations
+        },
+        GET_UAVS_ESTIMATED_LOCATIONS: state => {
+            return state.uavs_location_estimations
+        },
+        GET_UAVS_RECENT_ESTIMATED_LOCATION: state => {
+            return state.recent_uavs_estimated_location
+        },
+        GET_UES_RECENT_LOCATION: state => {
+            return state.ues_locations.flatMap(function (r) {
+                let data_by_client = r.data.map(function (d) {
+                        return {
+                            'x': parseFloat(d.latitude),
+                            'y': parseFloat(d.longitude),
+                        }
+                    }
+                ).map(function (f) {
+                    f.id = r.device.id
+
+                    return f
+                }).slice(0, 1)
+
+                return data_by_client
+            })
+        },
+        GET_UES_TRAJECTORIES: state => {
+            return state.ues_locations.map(function (r) {
+                return {
+                    client_id: r.device.id,
+                    movement: r.data.map(function (d) {
+                        return {
+                            'x': parseFloat(d.latitude),
+                            'y': parseFloat(d.longitude),
+                        }
+                    })
+                }
+            })
+        },
+        GET_SIGNAL_BY_COORDINATES: state => {
+            return state.ues_locations.flatMap(function (r) {
+                return r.data.flatMap(function (d) {
                     return {
                         'x': parseFloat(d.latitude),
                         'y': parseFloat(d.longitude),
+                        'z': d.signal
                     }
                 })
-            }
-        })
-    },
-    GET_SIGNAL_BY_COORDINATES: state => {
-        return state.ues_locations.flatMap(function (r) {
-            return r.data.flatMap(function (d) {
-                return {
-                    'x': parseFloat(d.latitude),
-                    'y': parseFloat(d.longitude),
-                    'z': d.signal
-                }
             })
-        })
-    },
-    GET_CURRENT_ESTIMATION: state => {
-        return state.current_estimation
+        },
+        GET_CURRENT_ESTIMATION: state => {
+            return state.current_estimation
+        }
     }
-}
 ;
 
 const actions = {
@@ -90,7 +107,7 @@ const actions = {
 
         commit("UPDATE_UAVS_ESTIMATION_LOCATION_DATA", data)
     },
-    SET_CURRENT_ESTIMATION: async ({commit},estimation) => {
+    SET_CURRENT_ESTIMATION: async ({commit}, estimation) => {
 
         commit("UPDATE_CURRENT_ESTIMATION", estimation)
     }
@@ -104,7 +121,7 @@ const mutations = {
     UPDATE_UAVS_ESTIMATION_LOCATION_DATA: (state, payload) => {
         state.uavs_location_estimations = payload
     },
-    UPDATE_CURRENT_ESTIMATION: (state,payload) => {
+    UPDATE_CURRENT_ESTIMATION: (state, payload) => {
         state.current_estimation = payload
     }
 };
