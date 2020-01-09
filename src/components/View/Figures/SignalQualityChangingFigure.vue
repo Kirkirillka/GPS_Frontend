@@ -24,7 +24,7 @@
                     chart: {
                         type: "line",
                         stacked: true,
-                        height: this.height,
+
                         zoom: {
                             enabled: false
                         },
