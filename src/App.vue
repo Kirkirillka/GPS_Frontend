@@ -1,5 +1,6 @@
 <template>
     <div id="app">
+        <notifications group="main" />
         <NavigationView></NavigationView>
         <router-view name="default"></router-view>
     </div>

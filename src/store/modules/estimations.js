@@ -63,6 +63,13 @@ const mutations = {
         state.optimization_methods = payload
     },
     ADD_ESTIMATION_TASKS: (state, payload) => {
+
+        Vue.notify({
+            group: 'main',
+            title: 'New estimation has been scheduled!',
+            text: 'Your task is added to task queue. Press the update button to get new estimations.'
+        });
+
         state.running_tasks.push(payload)
     }
 };

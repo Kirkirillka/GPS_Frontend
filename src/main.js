@@ -8,6 +8,10 @@ import BootstrapVue from 'bootstrap-vue'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 
+
+// For notification
+import Notifications from 'vue-notification'
+
 import store from './store'
 // use router
 import router from './router'
@@ -20,6 +24,10 @@ Vue.component('apexchart', VueApexCharts)
 
 // Bootstrap
 Vue.use(BootstrapVue)
+
+//vue-notifications
+Vue.use(Notifications)
+
 
 Vue.config.productionTip = true
 
