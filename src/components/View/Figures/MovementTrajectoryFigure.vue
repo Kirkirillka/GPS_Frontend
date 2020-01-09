@@ -19,7 +19,7 @@
             this.draw_scatter()
         },
         watch: {
-            get_series: function () {
+            ues_trajectory: function () {
                 this.draw_scatter()
             }
         },
