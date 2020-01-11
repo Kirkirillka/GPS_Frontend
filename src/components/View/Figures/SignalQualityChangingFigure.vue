@@ -1,89 +1,42 @@
 <template>
     <div>
-        <apexchart :options="options" :series="get_series"/>
+        <div id="signal-changes-line">
+        </div>
     </div>
 </template>
 
 <script>
 
-    import moment from "moment";
-    //import * as d3 from "d3v4";
     import {mapGetters} from 'vuex';
+    import * as Plotly from "plotly.js-dist";
 
 
     export default {
         name: "SignalQualityDynamics",
         data: function () {
-            return {
-                options: {
-                    plotOptions: {
-                        line: {
-                            curve: 'smooth',
-                        }
-                    },
-                    chart: {
-                        type: "line",
-                        stacked: true,
+            return {}
+        },
+        mounted() {
+            this.draw()
+        },
+        watch: {
+            get_series: function () {
+                this.draw()
+            }
+        },
+        methods: {
+            draw: function () {
 
-                        zoom: {
-                            enabled: false
-                        },
-                    },
+                var data = this.get_series;
 
-                    dataLabels: {
-                        enabled: false
-                    },
+                var layout = {
+                    title: 'Signal Quality Changes for Registered UEs',
+                    autosize: true,
+                    height: this.height,
+                };
 
-                    markers: {
-                        size: 0,
-                        style: 'full',
-                    },
-                    fill: {
-                        type: 'gradient',
-                        gradient: {
 
-                            inverseColors: false,
-                            opacityFrom: 0.40,
-                            opacityTo: 0.8,
-                            stops: [20, 100, 100, 100]
-                        },
-                    },
-                    yaxis: {
-                        labels: {
-                            style: {
-                                color: '#8e8da4',
-                            },
-                            offsetX: 0,
-                            formatter: function (val) {
-                                return -parseFloat(val).toFixed(2);
-                            },
-                        },
-                        axisBorder: {
-                            show: true
-                        },
-                        axisTicks: {
-                            show: false
-                        }
-                    },
-                    xaxis: {
-                        type: 'datetime',
-                        tickAmount: 8,
-                        labels: {
-
-                            formatter: function (val, timestamp) {
-                                return moment(timestamp).format("DD MMM hh:mm:ss")
-                            }
-                        }
-                    },
-                    tooltip: {
-                        shared: true
-                    },
-                    legend: {
-                        position: 'top',
-                        horizontalAlign: 'right',
-                        offsetX: -10
-                    }
-                },
+                Plotly.newPlot('signal-changes-line', data, layout);
             }
         },
         computed: {
@@ -107,14 +60,9 @@
                 return this.ues_locations.map(function (r) {
                     return {
                         "name": r.device.id.slice(0, 6),
-                        "data": r.data.map(
-                            function (r) {
-                                return {
-                                    "x": r.time.value,
-                                    "y": -parseFloat(r.signal)
-                                }
-                            }
-                        )
+                        "x": r.data.map(d=>d.time.value),
+                        "y": r.data.map(d=>parseFloat(d.signal)),
+                        mode: 'lines+markers'
                     }
                 })
 
