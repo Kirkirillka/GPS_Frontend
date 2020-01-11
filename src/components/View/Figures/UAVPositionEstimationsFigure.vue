@@ -32,7 +32,6 @@
                     mode: 'markers+text',
                     type: 'scatter',
                     name: 'UE',
-                    textposition: 'top',
 
                     marker: {
                         size: 12,
