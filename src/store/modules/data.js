@@ -21,8 +21,8 @@ const getters = {
             return state.ues_locations.flatMap(function (r) {
                 let data_by_client = r.data.map(function (d) {
                         return {
-                            'x': parseFloat(d.latitude),
-                            'y': parseFloat(d.longitude),
+                            'x': parseFloat(d.longitude),
+                            'y': parseFloat(d.latitude),
                         }
                     }
                 ).map(function (f) {
@@ -40,8 +40,8 @@ const getters = {
                     client_id: r.device.id,
                     movement: r.data.map(function (d) {
                         return {
-                            'x': parseFloat(d.latitude),
-                            'y': parseFloat(d.longitude),
+                            'x': parseFloat(d.longitude),
+                            'y': parseFloat(d.latitude),
                         }
                     })
                 }
@@ -51,8 +51,8 @@ const getters = {
             return state.ues_locations.flatMap(function (r) {
                 return r.data.flatMap(function (d) {
                     return {
-                        'x': parseFloat(d.latitude),
-                        'y': parseFloat(d.longitude),
+                        'x': parseFloat(d.longitude),
+                        'y': parseFloat(d.latitude),
                         'z': d.signal
                     }
                 })
