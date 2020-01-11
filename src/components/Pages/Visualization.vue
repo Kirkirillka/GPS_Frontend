@@ -1,10 +1,10 @@
 <template>
     <div>
         <b-form-row>
-            <b-col cols="3">
+            <b-col lg="3" >
                 <ControlMenuView></ControlMenuView>
             </b-col>
-            <b-col cols="9">
+            <b-col lg="9" >
                 <GraphicsView v-bind:figures="figures"></GraphicsView>
             </b-col>
         </b-form-row>

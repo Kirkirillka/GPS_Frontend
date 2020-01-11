@@ -1,14 +1,14 @@
 <template>
     <div>
         <b-form-row>
-            <b-col cols="2">
+            <b-col lg="3" >
                 <ControlMenuView></ControlMenuView>
             </b-col>
 
-            <b-col cols="8">
+            <b-col lg="6" >
                 <GraphicsView v-bind:figures="figures"></GraphicsView>
             </b-col>
-            <b-col cols="2">
+            <b-col lg="3" >
                 <EstimationMenuView></EstimationMenuView>
             </b-col>
         </b-form-row>
