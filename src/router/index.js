@@ -5,7 +5,7 @@ import Visualization from "../components/Pages/Visualization";
 import Estimation from "../components/Pages/Estimation";
 import SignalQualityChangingFigure from "../components/View/Figures/SignalQualityChangingFigure";
 import MovementTrajectoryFigure from "../components/View/Figures/MovementTrajectoryFigure";
-import SignalQualityHeatmapFigure from "../components/View/Figures/SignalQualityHeatmapFigure";
+const SignalQualityHeatmapFigure = () => import('../components/View/Figures/SignalQualityHeatmapFigure')
 import UAVPositionEstimationsFigure from "../components/View/Figures/UAVPositionEstimationsFigure";
 import RecentUEsPositionsFigure from "../components/View/Figures/RecentUEsPositionsFigure";
 import EstimationListView from "../components/View/Menus/EstimationListView";
