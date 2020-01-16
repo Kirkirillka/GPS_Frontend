@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div >
         <div id="trajectory-entry">
         </div>
     </div>
@@ -57,8 +57,8 @@
             get_series: function () {
                 return this.ues_trajectory.map( function (d) {
                     return {
-                        name: name,
-                        mode: 'lines',
+                        name: d.client_id.slice(0,6),
+                        mode: 'markers+lines',
                         type: 'scatter',
                         x: d.movement.map(s => s.x),
                         y: d.movement.map(s => s.y)
