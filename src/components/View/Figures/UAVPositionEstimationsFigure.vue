@@ -59,6 +59,25 @@
                     title: 'UEs last positions and estimated locations for UAVs',
                     autosize: true,
                     height: this.height,
+                    annotations: [{
+                        xref: 'paper',
+                        yref: 'paper',
+                        x: 0,
+                        xanchor: 'right',
+                        y: 1,
+                        yanchor: 'bottom',
+                        text: 'Latitude',
+                        showarrow: false
+                    }, {
+                        xref: 'paper',
+                        yref: 'paper',
+                        x: 1,
+                        xanchor: 'left',
+                        y: 0,
+                        yanchor: 'top',
+                        text: 'Longitude',
+                        showarrow: false
+                    }]
                 };
 
                 Plotly.newPlot('estimation-entry', data, layout, {responsive: true});

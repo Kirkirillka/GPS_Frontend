@@ -6,6 +6,7 @@ import Estimation from "../components/Pages/Estimation";
 import SignalQualityChangingFigure from "../components/View/Figures/SignalQualityChangingFigure";
 import MovementTrajectoryFigure from "../components/View/Figures/MovementTrajectoryFigure";
 const SignalQualityHeatmapFigure = () => import('../components/View/Figures/SignalQualityHeatmapFigure')
+const LinkMeasurementFigure = () => import('../components/View/Figures/LinkMeasurementFigure')
 import UAVPositionEstimationsFigure from "../components/View/Figures/UAVPositionEstimationsFigure";
 import RecentUEsPositionsFigure from "../components/View/Figures/RecentUEsPositionsFigure";
 import EstimationListView from "../components/View/Menus/EstimationListView";
@@ -47,6 +48,10 @@ const routes = [
                                 {
                                     path: "client_view",
                                     description: "Client Movement Trajectory"
+                                },
+                                {
+                                    path: "link_view",
+                                    description: "Link Measurement"
                                 }
                             ]
                         }
@@ -66,6 +71,11 @@ const routes = [
                             path: 'clients',
                             name: 'client_view',
                             component: MovementTrajectoryFigure
+                        },
+                        {
+                            path: "link_measurements",
+                            name: "link_view",
+                            component: LinkMeasurementFigure
                         }
                     ]
                 },

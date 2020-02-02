@@ -1,6 +1,6 @@
 <template>
-    <div >
-        <div id="trajectory-entry">
+    <div>
+        <div id="link-measurement-entry">
         </div>
     </div>
 </template>
@@ -11,7 +11,7 @@
     import {mapGetters} from 'vuex';
 
     export default {
-        name: "ClientMovementTrajectory",
+        name: "LinkMeasurementFigure",
         data: function () {
             return {}
         },
@@ -19,7 +19,7 @@
             this.draw_scatter()
         },
         watch: {
-            ues_trajectory: function () {
+            link_measurements: function () {
                 this.draw_scatter()
             }
         },
@@ -29,7 +29,7 @@
                 var data = this.get_series;
 
                 var layout = {
-                    title: 'Clients Movement Trajectory',
+                    title: 'Link Measurement Figure',
                     autosize: true,
                     height: this.height,
                     legend: {
@@ -47,7 +47,7 @@
                         xanchor: 'right',
                         y: 1,
                         yanchor: 'bottom',
-                        text: 'Latitude',
+                        text: 'Speed, Kbits/s',
                         showarrow: false
                     }, {
                         xref: 'paper',
@@ -56,17 +56,17 @@
                         xanchor: 'left',
                         y: 0,
                         yanchor: 'top',
-                        text: 'Longitude',
+                        text: 'Date',
                         showarrow: false
                     }]
                 };
 
-                Plotly.newPlot('trajectory-entry', data, layout, {responsive: true});
+                Plotly.newPlot('link-measurement-entry', data, layout, {responsive: true});
             }
         },
         computed: {
             ...mapGetters("data", {
-                ues_trajectory: "GET_UES_TRAJECTORIES",
+                link_measurements: "GET_LINK_MEASUREMENTS",
             }),
             ...mapGetters("visual", {
                 width: "GET_WIDTH",
@@ -74,14 +74,21 @@
             }),
 
             get_series: function () {
-                return this.ues_trajectory.map( function (d) {
-                    return {
-                        name: d.client_id.slice(0,6),
-                        mode: 'markers+lines',
-                        type: 'scatter',
-                        x: d.movement.map(s => s.x),
-                        y: d.movement.map(s => s.y)
-                    }
+                return this.link_measurements.flatMap(function (d) {
+                    return [
+                        {
+                            name: d.client_id.slice(0, 6) + ".DL",
+                            type: 'scatter',
+                            x: d.data.map(s=>s.time),
+                            y: d.data.map(s => s.downlink),
+                        },
+                        {
+                            name: d.client_id.slice(0, 6) + ".UL",
+                            type: 'scatter',
+                            x: d.data.map(s=>s.time),
+                            y: d.data.map(s => s.uplink),
+                        }
+                    ]
                 })
 
             },

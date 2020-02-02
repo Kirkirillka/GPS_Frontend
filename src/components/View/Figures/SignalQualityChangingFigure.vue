@@ -33,6 +33,25 @@
                     title: 'Signal Quality Changes for Registered UEs',
                     autosize: true,
                     height: this.height,
+                    annotations: [{
+                        xref: 'paper',
+                        yref: 'paper',
+                        xanchor: 'right',
+                        yanchor: 'bottom',
+                        x: 0,
+                        y: 1,
+                        text: 'RSS, dBm',
+                        showarrow: false
+                    }, {
+                        xref: 'paper',
+                        yref: 'paper',
+                        x: 1,
+                        xanchor: 'left',
+                        yanchor: 'top',
+                        y: 0,
+                        text: 'Date',
+                        showarrow: false
+                    }]
                 };
 
 

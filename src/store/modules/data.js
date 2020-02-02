@@ -48,7 +48,7 @@ const getters = {
             })
         },
         GET_SIGNAL_BY_COORDINATES: state => {
-            return state.ues_locations.flatMap(function (r) {
+            return state.ues_locations.map(function (r) {
                 return r.data.flatMap(function (d) {
                     return {
                         'x': parseFloat(d.longitude),
@@ -60,6 +60,21 @@ const getters = {
         },
         GET_CURRENT_ESTIMATION: state => {
             return state.current_estimation
+        },
+        GET_LINK_MEASUREMENTS: state => {
+            return state.ues_locations.flatMap( function (r) {
+                return {
+                    client_id: r.device.id,
+
+                    data: r.data.map(function (d) {
+                        return {
+                            "time": d.time.value,
+                            'downlink': parseFloat(d.downlink),
+                            'uplink': parseFloat(d.uplink),
+                        }
+                    })
+                }
+            });
         }
     }
 ;
