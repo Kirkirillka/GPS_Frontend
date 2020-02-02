@@ -1,8 +1,33 @@
 import Vue from 'vue'
 import App from './App.vue'
+import axios from 'axios'
+import VueAxios from 'vue-axios'
+import VueApexCharts from 'vue-apexcharts'
 
-Vue.config.productionTip = false
+import BootstrapVue from 'bootstrap-vue'
+import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap-vue/dist/bootstrap-vue.css'
+
+import store from './store'
+// use router
+import router from './router'
+
+// axios
+Vue.use(VueAxios, axios)
+
+// apexchart
+Vue.component('apexchart', VueApexCharts)
+
+// Bootstrap
+Vue.use(BootstrapVue)
+
+Vue.config.productionTip = true
 
 new Vue({
-  render: h => h(App),
+    el: "#app",
+    store,
+    router,
+    render: h => h(App),
 }).$mount('#app')
+
+
