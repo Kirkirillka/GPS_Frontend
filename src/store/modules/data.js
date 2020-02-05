@@ -48,7 +48,7 @@ const getters = {
             })
         },
         GET_SIGNAL_BY_COORDINATES: state => {
-            return state.ues_locations.map(function (r) {
+            return state.ues_locations.flatMap(function (r) {
                 return r.data.flatMap(function (d) {
                     return {
                         'x': parseFloat(d.longitude),
