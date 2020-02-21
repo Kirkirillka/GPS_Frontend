@@ -5,6 +5,7 @@
 </template>
 
 <script>
+    // The button component controls when to invoke a new optimization task registration.
     export default {
         name: "EstimationTaskRunnerButton",
         methods: {

@@ -19,10 +19,13 @@
 
 <script>
 
+    // The component to allow an user to choose the date with exact time to filter the dataset.
+
     import jQuery from 'jquery'
     import {mapGetters} from 'vuex';
 
     // Using font-awesome 5 icons
+    // Required for the Datepicker to look good
     import '@fortawesome/fontawesome-free/css/fontawesome.css';
     import '@fortawesome/fontawesome-free/css/regular.css';
     import '@fortawesome/fontawesome-free/css/solid.css';

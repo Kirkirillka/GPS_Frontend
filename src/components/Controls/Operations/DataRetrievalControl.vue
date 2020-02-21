@@ -12,6 +12,12 @@
 </template>
 
 <script>
+    // The component is a container for control elements:
+    // 1. UELocationUpdateButton
+    // 2. UAVEstimationUpdateButton
+    //
+    // Used for convenience to place the components in the code.
+
     import UAVEstimationUpdateButton from "../Buttons/UAVEstimationUpdateButton";
     import UELocationUpdateButton from "../Buttons/UELocationUpdateButton";
 

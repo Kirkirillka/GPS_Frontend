@@ -5,6 +5,9 @@
 </template>
 
 <script>
+
+    // The button component controls when to invoke an DB statistics update procedure.
+
     export default {
         name: "DBStatsUpdateButton",
         methods: {

@@ -14,6 +14,13 @@
 
 <script>
 
+    // The component controls continuous polling process.
+    // If toggled, there will be performed the following actions:
+    //  1. Fetches new dataset
+    //  2. Fetches DB statistics and registered clients info
+    //  3. Fetches information for UAVs estimations
+
+
     import {mapGetters} from 'vuex';
 
     export default {

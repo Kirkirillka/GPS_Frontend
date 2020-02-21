@@ -16,6 +16,13 @@
 </template>
 
 <script>
+    // The page consists of three main parts
+    //
+    // The left-most part is to hold the overall control element - ControlMenuView.
+    // The center is to put figures to show the data - GraphicsView.
+    // The right-most part is to hold estimation controls - EstimationMenuView.
+
+
     import EstimationMenuView from "../View/Menus/EstimationMenuView";
     import GraphicsView from "../View/GraphicsView";
     import ControlMenuView from "../View/Menus/ControlMenuView";

@@ -11,6 +11,10 @@
 </template>
 
 <script>
+    // The component is a container for control elements:
+    // 1. EstimationTaskRunnerButton
+    //
+    // Used for convenience to place the components in the code.
 
     import EstimationTaskRunnerButton from "../Buttons/EstimationTaskRunnerButton";
     export default {

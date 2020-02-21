@@ -5,6 +5,7 @@
 </template>
 
 <script>
+    // The button component controls when to dispatch a new task to update the registered clients information.
     export default {
         name: "RegisteredUEUpdateButton",
         methods: {

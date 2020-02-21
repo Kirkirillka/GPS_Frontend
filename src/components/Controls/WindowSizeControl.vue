@@ -19,6 +19,10 @@
 
 <script>
 
+    // Control how many entries to take from every data line per a Android Client.
+    // The approach is to take the N-th the most recent datapoints for every clients.
+    // This components controls the N number.
+
     import {mapGetters} from 'vuex';
 
     export default {

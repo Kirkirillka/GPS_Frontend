@@ -5,6 +5,7 @@
 </template>
 
 <script>
+    // The button components control when to dispatch an event to fetch the UEs messages with applied filters.
     export default {
         name: "UELocationUpdateButton",
         methods: {

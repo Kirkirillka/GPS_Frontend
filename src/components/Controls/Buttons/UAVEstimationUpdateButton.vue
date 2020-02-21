@@ -6,6 +6,7 @@
 </template>
 
 <script>
+    // The button components control when to dispatch an event to update the UAVs estimation data.
     export default {
         name: "UAVEstimationUpdateButton",
         methods: {

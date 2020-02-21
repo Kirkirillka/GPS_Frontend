@@ -12,6 +12,11 @@
 </template>
 
 <script>
+    // The page consists of two elements:
+
+    // The left part - to show overall control elements.
+    // The right part - to show figures.
+
     import ControlMenuView from "../View/Menus/ControlMenuView";
     import GraphicsView from "../View/GraphicsView";
 

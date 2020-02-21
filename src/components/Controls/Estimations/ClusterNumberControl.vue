@@ -26,6 +26,9 @@
 </template>
 
 <script>
+    // The components controls the maximum amount of clusters it's allowed to dispatch in an estimation task.
+    // The number depends on the number of registered clients available.
+    // Roughly speaking, the number of clients = the number clusters.
 
     import {mapGetters} from 'vuex';
 

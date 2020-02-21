@@ -15,6 +15,10 @@
 
 <script>
 
+    // The element controls how frequent to execute polling operation.
+    // Minimal time is 5 seconds. That could be reduced, but in case of huge dataset some figures, such as heatmap,
+    // will consume enormous amount of resources, poor performed computers may struggle.
+
     import {mapGetters} from 'vuex';
 
     export default {

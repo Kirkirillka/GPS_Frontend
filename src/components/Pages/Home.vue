@@ -10,6 +10,8 @@
 
 <script>
 
+    // The default page to route "/".
+
     export default {
         components: {},
         name: "Home"

@@ -7,6 +7,7 @@
 </template>
 
 <script>
+    // Main Vue.js entry point.
 
     import NavigationView from "./components/View/NavigationView";
     export default {

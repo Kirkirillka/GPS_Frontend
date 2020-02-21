@@ -25,6 +25,10 @@
 
 <script>
 
+    // The components controls which optimization method to use.
+    // The methods must be registered on the backend site properly, otherwise a new optimization task using
+    // an unregistered method will fail.
+
     import {mapGetters} from 'vuex';
     import {mapMutations} from 'vuex';
 
