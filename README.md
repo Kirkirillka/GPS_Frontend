@@ -1,5 +1,25 @@
 # GPS_Tracker
 
+## Some tips
+
+Docker image saving to a `tar` archive: 
+
+```bash
+docker-compose save gps_frontend -o gps_frontend
+```
+
+Loading the image in the other server
+
+```bash
+docker-compose load -i gps_frontend
+```
+
+Starting the system in background
+
+```bash
+docker-compose up -d 
+```
+
 ## Requirements
 
 For using a container:
