@@ -8,7 +8,6 @@
 
 <script>
 
-    //import * as d3 from 'd3v4';
     import * as Plotly from "plotly.js-dist";
     import {mapGetters} from 'vuex';
 
@@ -20,15 +19,11 @@
 
         methods: {
             draw: function () {
-                let x = this.get_signal_data.map(d => d.x)
-                let y = this.get_signal_data.map(d => d.y)
-                let z = this.get_signal_data.map(d => d.z)
-
 
                 var data = [{
-                    x: x,
-                    y: y,
-                    z: z,
+                    x: this.get_signal_data.map(d => d.x),
+                    y: this.get_signal_data.map(d => d.y),
+                    z: this.get_signal_data.map(d => d.z),
                     marker: {
                         size: 3,
                         opacity: 0.7,
