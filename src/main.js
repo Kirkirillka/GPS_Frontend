@@ -7,6 +7,10 @@ import BootstrapVue from 'bootstrap-vue'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 
+import '@fortawesome/fontawesome-free'
+
+// axios
+Vue.use(VueAxios, axios)
 
 // For notification
 import Notifications from 'vue-notification'
@@ -15,8 +19,7 @@ import store from './store'
 // use router
 import router from './router'
 
-// axios
-Vue.use(VueAxios, axios)
+
 
 
 // Bootstrap
