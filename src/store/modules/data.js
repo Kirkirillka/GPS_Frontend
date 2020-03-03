@@ -48,7 +48,10 @@ const getters = {
             })
         },
         GET_SIGNAL_BY_COORDINATES: state => {
-            return state.ues_locations.flatMap(function (r) {
+            if (state.ues_locations === undefined){
+                return []
+            }
+            else {return state.ues_locations.flatMap(function (r) {
                 return r.data.flatMap(function (d) {
                     return {
                         'x': parseFloat(d.longitude),
@@ -57,6 +60,7 @@ const getters = {
                     }
                 })
             })
+            }
         },
         GET_CURRENT_ESTIMATION: state => {
             return state.current_estimation
