@@ -1,4 +1,5 @@
 import api from "../api";
+import Vue from 'vue'
 
 const state = {
     num_clusters: 0,
@@ -39,7 +40,12 @@ const actions = {
             start_date: rootGetters['control/START_DATETIME_FILTER'],
             end_date: rootGetters['control/END_DATETIME_FILTER'],
             num_clusters: getters.GET_CURRENT_CLUSTERS_NUM,
-            method: getters.GET_CURRENT_OPTIMIZATION_METHOD
+            method: getters.GET_CURRENT_OPTIMIZATION_METHOD,
+            explicit_ues_locations: rootGetters["data/GET_UES_RECENT_LOCATION"].map(
+                function (d) {
+                    return [d.x, d.y]
+                }
+            )
         };
 
         if (body === undefined) {
@@ -63,6 +69,13 @@ const mutations = {
         state.optimization_methods = payload
     },
     ADD_ESTIMATION_TASKS: (state, payload) => {
+
+        Vue.notify({
+            group: 'main',
+            title: 'New estimation has been scheduled!',
+            text: 'Your task is added to task queue. Press the update button to get new estimations.'
+        });
+
         state.running_tasks.push(payload)
     }
 };

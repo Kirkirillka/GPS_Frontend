@@ -5,7 +5,7 @@
                 label="Polling Switcher"
                 label-size="sm">
             <div>
-                <b-checkbox size="sm" switch v-bind:oninput="is_polling" v-on:change="updateValue">
+                <b-checkbox v-bind:checked="is_polling" size="sm" switch v-on:change="toggle_polling_control">
                 </b-checkbox>
             </div>
         </b-form-group>
@@ -14,6 +14,13 @@
 
 <script>
 
+    // The component controls continuous polling process.
+    // If toggled, there will be performed the following actions:
+    //  1. Fetches new dataset
+    //  2. Fetches DB statistics and registered clients info
+    //  3. Fetches information for UAVs estimations
+
+
     import {mapGetters} from 'vuex';
 
     export default {
@@ -21,16 +28,17 @@
         computed: {
             ...mapGetters("control", {
                 is_polling: "POLLING",
-                refresh: "REFRESH_TIMEOUT"
+                refresh: "REFRESH_TIMEOUT",
+                timer: "GET_POLLING_TIMER"
             }),
         },
         watch: {
             is_polling: function () {
-                this.toggle_polling()
+                this.on_toggle_pulled()
             }
         },
         methods: {
-            updateValue: function (data) {
+            toggle_polling_control: function (data) {
                 this.$store.commit("control/TOGGLE_PULLING", data);
             },
             poll_operation: function () {
@@ -40,16 +48,19 @@
                 this.$store.dispatch("stats/GET_MESSAGES_STATISTICS")
 
             },
-            toggle_polling: function () {
+            on_toggle_pulled: function () {
                 if (this.is_polling === true) {
                     this.poll_operation()
-                    this.timer = setInterval(this.poll_operation, this.refresh * 1000)
+                    let timer_id = setInterval(this.poll_operation, this.refresh * 1000)
+
+                    // Save timer ID
+                    this.$store.commit("control/UPDATE_POLLING_TIMER", timer_id)
                 } else {
-                    clearInterval(this.timer)
+                    this.$store.commit("control/STOP_POLLING_TIMER")
                 }
             }
-
         },
+
 
     }
 </script>

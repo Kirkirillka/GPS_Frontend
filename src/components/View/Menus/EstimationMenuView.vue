@@ -15,6 +15,13 @@
                     </b-col>
                 </b-form-row>
             </b-card-text>
+
+            <template slot="footer">
+                <b-button-group>
+                    <UAVEstimationUpdateButton></UAVEstimationUpdateButton>
+                    <EstimationTaskRunnerButton></EstimationTaskRunnerButton>
+                </b-button-group>
+            </template>
         </b-card>
     </div>
 </template>
@@ -22,10 +29,15 @@
 <script>
     import ClusterNumberControl from "../../Controls/Estimations/ClusterNumberControl";
     import EstimationMethodControl from "../../Controls/Estimations/EstimationMethodControl";
+    import UAVEstimationUpdateButton from "../../Controls/Buttons/UAVEstimationUpdateButton";
+    import EstimationTaskRunnerButton from "../../Controls/Buttons/EstimationTaskRunnerButton";
 
     export default {
-        name: "EstimationSubMenu",
-        components: {EstimationMethodControl, ClusterNumberControl}
+        name: "EstimationMenuView",
+        components: {
+            EstimationTaskRunnerButton,
+            UAVEstimationUpdateButton, EstimationMethodControl, ClusterNumberControl
+        }
     }
 </script>
 

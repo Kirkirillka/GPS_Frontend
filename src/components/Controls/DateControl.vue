@@ -1,20 +1,17 @@
 <template>
     <div>
         <b-form-group
-
-
                 description="Beginning datetime of the dataset"
                 label-for="start-time"
-        >
+                label-size="sm">
             <date-picker size="sm" id="start-time" v-bind:value="start" v-on:input="update_start_date"></date-picker>
 
         </b-form-group>
 
         <b-form-group
-                description="Set the last datetime of data."
+                description="Ending datetime of the dataset"
                 label-for="end-time"
-                label-size="sm"
-        >
+                label-size="sm">
             <date-picker id="end-time" v-bind:value="end" v-on:input="update_end_date"></date-picker>
         </b-form-group>
     </div>
@@ -22,10 +19,13 @@
 
 <script>
 
+    // The component to allow an user to choose the date with exact time to filter the dataset.
+
     import jQuery from 'jquery'
     import {mapGetters} from 'vuex';
 
     // Using font-awesome 5 icons
+    // Required for the Datepicker to look good
     import '@fortawesome/fontawesome-free/css/fontawesome.css';
     import '@fortawesome/fontawesome-free/css/regular.css';
     import '@fortawesome/fontawesome-free/css/solid.css';

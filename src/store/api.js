@@ -1,10 +1,10 @@
 import * as axios from "axios";
 
-const baseDomain = "http://localhost:5000/"
+const baseDomain = "api/"
 
 export default {
     fetch_info_by_client: async (body) => {
-
+4
         let r = await axios.post(baseDomain + "aggr/by_device_id", body)
 
         return r.data

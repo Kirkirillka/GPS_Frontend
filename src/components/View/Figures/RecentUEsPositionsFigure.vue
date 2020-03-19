@@ -13,7 +13,7 @@
     import {mapGetters} from 'vuex';
 
     export default {
-        name: "UAVPositionEstimation",
+        name: "RecentUEsPositionsFigure",
         data: function () {
             return {
                 estimation_color: 'black',
@@ -32,6 +32,8 @@
                     mode: 'markers+text',
                     type: 'scatter',
                     name: 'UE',
+                    text: this.get_ues_locations.map(d => d.id.slice(0, 6)),
+                    textposition: 'top',
 
                     marker: {
                         size: 12,
@@ -40,23 +42,11 @@
                     }
                 };
 
-                var trace2 = {
-                    x: this.get_uavs_locations.map(d => d.x),
-                    y: this.get_uavs_locations.map(d => d.y),
-                    mode: 'markers',
-                    type: 'scatter',
-                    name: 'UAV',
-                    marker: {
-                        size: 20,
-                        color: this.estimation_color
-                    }
-                };
 
-
-                var data = [trace1, trace2];
+                var data = [trace1,];
 
                 var layout = {
-                    title: 'UEs last positions and estimated locations for UAVs',
+                    title: 'Recent received GPS Positions for UEs',
                     autosize: true,
                     height: this.height,
                     annotations: [{
@@ -93,42 +83,19 @@
             }
         },
         computed: {
+            ...mapGetters("control", {
+                start: "START_DATETIME_FILTER",
+                end: "END_DATETIME_FILTER",
+                window_size: "WINDOW_SIZE",
+                refresh_timeout: "REFRESH_TIMEOUT"
+            }),
             ...mapGetters("data", {
-                ues_locations: "GET_UES_LOCATIONS",
-                uavs_location_estimations: "GET_UAVS_ESTIMATED_LOCATIONS",
-                current_estimation: "GET_CURRENT_ESTIMATION"
+                get_ues_locations: "GET_UES_RECENT_LOCATION"
             }),
             ...mapGetters("visual", {
                 width: "GET_WIDTH",
                 height: "GET_HEIGHT"
             }),
-            get_ues_locations: function () {
-                let cur_estimation = this.current_estimation
-
-                if (cur_estimation.payload === undefined) {
-                    return []
-                } else {
-                    return cur_estimation.payload.ues_location.map(function (d) {
-                        return {
-                            x: d[0],
-                            y: d[1]
-                        }
-                    })
-                }
-            },
-            get_uavs_locations: function () {
-                let cur_estimation = this.current_estimation
-                if (cur_estimation.payload === undefined) {
-                    return []
-                } else {
-                    return cur_estimation.payload.suggested.map(function (r) {
-                        return {
-                            'x': parseFloat(r.latitude),
-                            'y': parseFloat(r.longitude),
-                        }
-                    })
-                }
-            }
         }
     }
 </script>

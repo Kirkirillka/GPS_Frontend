@@ -7,17 +7,21 @@
 
             <b-form-input type="range"
                           size="sm"
-                          v-bind:input="window_size"
+                          v-bind:value="window_size"
                           :min="window_min"
                           :max="window_max"
                           :formatter="IntegerFormat"
-                          v-on:change="updateValue"
+                          v-on:change="update_window_size"
             ></b-form-input>
         </b-form-group>
     </div>
 </template>
 
 <script>
+
+    // Control how many entries to take from every data line per a Android Client.
+    // The approach is to take the N-th the most recent datapoints for every clients.
+    // This components controls the N number.
 
     import {mapGetters} from 'vuex';
 
@@ -35,13 +39,13 @@
             }),
         },
         methods: {
-            updateValue: function (data) {
+            update_window_size: function (data) {
                 this.$store.commit("control/UPDATE_WINDOW_SIZE", data)
             },
             /**
              * @return {number}
              */
-            IntegerFormat(value) {
+            IntegerFormat: function (value) {
                 return parseInt(value)
             },
         },
